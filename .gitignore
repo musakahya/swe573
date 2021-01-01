@@ -1,0 +1,7 @@
+backend/api/settings.py
+backend/api/__pycache__
+backend/social_pill/__pycache__
+backend/social_pill/migrations
+backend/social_pill/views.py
+frontend/node_modules
+~
