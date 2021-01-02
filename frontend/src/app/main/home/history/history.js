@@ -59,9 +59,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const History = (props) => {
+const History = ({ rows, setRows}) => {
   const classes = useStyles();
-  const [rows, setRows] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState('loading');
 
@@ -86,9 +85,6 @@ const History = (props) => {
       console.log(err);
       setLoading('empty');
     })
-
-        
-
   }, []);
 
   return (

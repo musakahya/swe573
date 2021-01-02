@@ -22,12 +22,14 @@ const Home = (props) => {
 
   const classes = useStyles();
 
+  const [rows, setRows] = useState([]);
+
   return (
     <div className={classes.paper}>
 
-      <Search />
+      <Search historyData={rows}/>
 
-      <History />
+      <History rows={rows} setRows={setRows}/>
 
     </div>
   );

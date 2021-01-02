@@ -100,7 +100,7 @@ const Signup = ({}) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({username: loginValues.username, password: loginValues.password})
+      body: JSON.stringify({username: loginValues.username, email: loginValues.username, password: loginValues.password, is_superuser: false, is_staff: false})
     })
       .then(res => res.json())
       .then(json => {

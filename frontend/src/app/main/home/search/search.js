@@ -17,6 +17,9 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 
 // Styling begins
 
@@ -41,7 +44,7 @@ const themeTextField = createMuiTheme({
   },
 });
 
-const Search = () => {
+const Search = ({ historyData }) => {
   const useStyles = makeStyles((theme) => ({
     welcome: {
       
@@ -69,6 +72,7 @@ const Search = () => {
       height: theme.spacing(18),
       width: theme.spacing(25.5),
       boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
+      margin: theme.spacing(2),
     }
   }));
 
@@ -81,7 +85,9 @@ const Search = () => {
   const [options, setOptions] = useState([]);
   // const [options, setoptions] = useState([]);
   const [selected, setSelected] = useState("");
+  const [input, setInput] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
+  const [tweetCount, setTweetCount] = useState(0);
 
   function handleChange(e) {
     setSelected(e.target.value);
@@ -98,11 +104,40 @@ const Search = () => {
     })
   }
 
-  function handlePopup(e) {
-    if (e === "close") setPopupOpen(false);
-    else if (e.target.value != "") setPopupOpen(true);
-    else setPopupOpen(false);
+  function handleInput(e) {
+    setSelected(e);
+    axios.post('/api/history/', {
+      email_address: 'musa@kahya.com',
+      search_term: e,
+      date: new Date(),
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
+
+  function handlePopup(e) {
+    setInput(e.target.value)
+  }
+
+  useEffect(() => {
+
+    axios.get('/api/tweet/',
+    {
+    headers: {
+      Authorization: `JWT ${localStorage.getItem('token')}`
+    }}
+    )
+    .then((res) => {
+      setTweetCount(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }, []);
 
   // Component logic ends
 
@@ -113,40 +148,26 @@ const Search = () => {
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{ flexWrap: "nowrap" }}
+        style={{ flexWrap: "nowrap", width: window.innerWidth - 100 }}
       >
         <Grid item xs={12}>
-      <Grid
-        className={classes.welcome}
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap" }}
-      >
+
         <Grid item xs={12} className={classes.header}>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-            style={{ flexWrap: "nowrap" }}
-          >
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
               New Search
             </Typography>
-          </Grid>
         </Grid>
         
-        <Grid item xs={12} className={classes.search}>
+        <Grid item xs={12}>
           <Grid
             container
             direction="row"
             justify="flex-start"
-            alignItems="flex-start"
-            style={{ flexWrap: "nowrap", backgroundColor: '#FFFFFF', }}
+            alignItems="center"
+            style={{ flexWrap: "nowrap", width: window.innerWidth - 64 }}
           >
+            <Grid item xs={11} style={{ backgroundColor: '#FFFFFF', marginRight: 18 }}>
             <Autocomplete
               open={popupOpen}
               onClose={() => handlePopup("close")}
@@ -154,7 +175,6 @@ const Search = () => {
               options={options.sort(
                 (a, b) => -b.keyword.localeCompare(a.keyword)
               )}
-              style={{ width: window.innerWidth - 50 }}
               onChange={(e) => {
                 handleChange(e);
               }}
@@ -170,6 +190,14 @@ const Search = () => {
                 </MuiThemeProvider>
               )}
             />
+            </Grid>
+            <Grid item  style={{ backgroundColor: '#3F51B5', borderRadius: '3px',
+      border: '1px solid rgba(0,40,100,.12)', boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',}}>
+
+            <IconButton onClick={() => handleInput(input)} style={{ color: '#FFFFFF',  width: 60, height: 52 }}>
+        <ArrowForwardIcon style={{ fontSize: '32px' }} />
+      </IconButton>
+            </Grid>
           </Grid>
         </Grid>
         </Grid>
@@ -198,30 +226,54 @@ const Search = () => {
             spacing={4}
             style={{ flexWrap: "nowrap" }}
           >
+            <Grid item className={classes.dashboard_element}>
+            <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ flexWrap: "nowrap" }}
+          >
             <Grid item>
-            <div className={classes.dashboard_element}> 
-
-            </div>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
+              {historyData.length}
+            </Typography>
             </Grid>
             <Grid item>
-            <div className={classes.dashboard_element}> 
-
-            </div>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
+              Topics Searched
+            </Typography>
+            </Grid>
+            </Grid>
+            </Grid>
+            <Grid item className={classes.dashboard_element}>
+            <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ flexWrap: "nowrap" }}
+          >
+            <Grid item>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
+              {tweetCount}
+            </Typography>
             </Grid>
             <Grid item>
-            <div className={classes.dashboard_element}> 
-
-            </div>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
+              Tweets Returned
+            </Typography>
             </Grid>
-            <Grid item>
-            <div className={classes.dashboard_element}> 
-
-            </div>
+            </Grid>
             </Grid>
           </Grid>
         </Grid>
         </Grid>
-        </Grid>
+
         {selected && selected !== "" ? <Redirect to={`/app/result/tweets/?q=${selected.toLowerCase().replace(' ', '_')}`} /> : null}
     </div>
   );

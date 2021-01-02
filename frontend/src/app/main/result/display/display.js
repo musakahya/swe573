@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     BrowserRouter as Router,
@@ -7,10 +7,12 @@ import {
     useLocation
   } from 'react-router-dom';
   import axios from 'axios';
+  import UserContext from 'shared_resources/context/user_context';
 
   const Tweets = lazy(() => import('./tweets/tweets'));
   const Hashtags = lazy(() => import('./hashtags/hashtags'));
   const People = lazy(() => import('./people/people'));
+  const WordCloud = lazy(() => import('./word_cloud/word_cloud'));
 
 const Display = (props) => {
   
@@ -24,13 +26,17 @@ const Display = (props) => {
 
   const classes = useStyles();
 
+  const { user, setUser } = useContext(UserContext);
+
   const [tweets, setTweets] = useState();
+  const [words, setWords] = useState();
 
   useEffect(() => {
-    axios.get(`/api/search/${location.search}`)
+    axios.get(`/api/search/${location.search}/?u=${user.username}`
+)
     .then((res) => {
         setTweets(res.data.response);
-        console.log(res.data.response);
+        setWords(res.data.words);
     })
     .catch((err) => {
         console.log(err);
@@ -49,6 +55,9 @@ const Display = (props) => {
                 </Route>
                 <Route path="/app/result/people">
                     <People tweets={tweets}/>
+                </Route>
+                <Route path="/app/result/wordcloud">
+                    <WordCloud words={words}/>
                 </Route>
               </Switch>
           </Suspense>

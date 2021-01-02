@@ -16,3 +16,15 @@ class History(models.Model):
 
   def _str_(self):
     return self.search_term
+
+class Tweet(models.Model):
+  user = models.TextField()
+  search_term = models.TextField()
+  date = models.DateTimeField(auto_now_add=True)
+  tweet_text = models.TextField()
+  tweet_entities = models.TextField()
+  tweet_id = models.TextField()
+  tweet_date = models.TextField()
+
+  def _str_(self):
+    return self.id

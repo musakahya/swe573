@@ -43,7 +43,7 @@ const HistoryTable = (props) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell className={classes.cell}>Search Term</TableCell>
+              <TableCell className={classes.cell}>Topic</TableCell>
               <TableCell className={classes.cell} >
                 Date
                 {' '}
