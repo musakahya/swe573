@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "social_pill.fullname" . }}
+  labels:
+    {{- include "social_pill.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "social_pill.fullname" . }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app: {{ include "social_pill.fullname" . }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "social_pill.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: socialpill-client
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.socialPillClient.containerImage }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.socialPillClient.containerPort }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: socialpill-server
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.socialPillServer.containerImage }}"
+          env:
+            - name: NODE_ENV
+              value: "{{ .Values.envvars.NODE_ENV }}"
+            - name: PORT
+              value: "{{ .Values.envvars.PORT }}"
+            - name: DB_HOST
+              value: "{{ .Values.envvars.DB_HOST }}"
+            - name: DB_USER
+              value: "{{ .Values.envvars.DB_USER }}"
+            - name: DB_DATABASE
+              value: "{{ .Values.envvars.DB_DATABASE }}"
+            - name: DB_PORT
+              value: "{{ .Values.envvars.DB_PORT }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.envvars.DB_PASSWORD }}"
+            - name: TW_SECRET_ID
+              value: "{{ .Values.envvars.TW_SECRET_ID }}"
+            - name: TW_SECRET_KEY
+              value: "{{ .Values.envvars.TW_SECRET_KEY }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.socialPillServer.containerPort }}
+              protocol: TCP
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
