@@ -6,3 +6,4 @@ djangorestframework-jwt==1.11.0
 django-cors-headers==3.6.0
 numpy==1.19.4
 wordcloud==1.8.1
+python-dotenv==0.15.0 
