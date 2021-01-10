@@ -23,6 +23,6 @@ steps:
     azureResourceGroupForACR: 'SWE'
     azureContainerRegistry: swe573.azurecr.io
     command: save
-    chartNameForACR: social-pill
+    chartNameForACR: social_pill
     chartPathForACR: '$(Build.Repository.LocalPath)/helm/social_pill'
 
