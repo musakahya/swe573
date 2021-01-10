@@ -1,0 +1,28 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: HelmInstaller@0
+  displayName: 'Install Helm 2.14.1'
+
+- task: HelmDeploy@0
+  displayName: 'helm package'
+  inputs:
+    command: package
+    chartPath: '$(Build.Repository.LocalPath)/helm/social_pill'
+
+- task: HelmDeploy@0
+  displayName: 'helm save'
+  inputs:
+    azureSubscriptionForACR: 'Ücretsiz Deneme (0b3dbe3b-c339-4d74-a80d-7d371be817e4)'
+    azureResourceGroupForACR: 'SWE'
+    azureContainerRegistry: swe573.azurecr.io
+    command: save
+    chartNameForACR: social-pill
+    chartPathForACR: '$(Build.Repository.LocalPath)/helm/social_pill'
+
