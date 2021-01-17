@@ -1,0 +1,60 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '9a042704-0f9a-49a1-b5a1-cf0f4903417a'
+  imageRepositoryServer: 'backend'
+  containerRegistry: 'swe573.azurecr.io'
+  dockerfilePathServer: '$(Build.SourcesDirectory)/backend/Dockerfile'
+  tagServer: 'server_$(Build.BuildId)'
+  imageRepositoryClient: 'frontend'
+  dockerfilePathClient: '$(Build.SourcesDirectory)/frontend/Dockerfile'
+  tagClient: 'client_$(Build.BuildId)'
+  
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: BuildServer
+  displayName: Build and push server
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push a server image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepositoryServer)
+        dockerfile: $(dockerfilePathServer)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tagServer)
+- stage: BuildClient
+  displayName: Build and push client
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push a client image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepositoryClient)
+        dockerfile: $(dockerfilePathClient)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tagClient)
+
