@@ -13,6 +13,8 @@ import {
   const Hashtags = lazy(() => import('./hashtags/hashtags'));
   const People = lazy(() => import('./people/people'));
   const WordCloud = lazy(() => import('./word_cloud/word_cloud'));
+  const Sentiments = lazy(() => import('./sentiments/sentiments'));
+  const Cooccurrence = lazy(() => import('./cooccurrence/cooccurrence'));
 
 const Display = (props) => {
   
@@ -58,6 +60,12 @@ const Display = (props) => {
                 </Route>
                 <Route path="/app/result/wordcloud">
                     <WordCloud words={words}/>
+                </Route>
+                <Route path="/app/result/sentiments">
+                    <Sentiments tweets={tweets}/>
+                </Route>
+                <Route path="/app/result/cooccurrence">
+                    <Cooccurrence tweets={tweets} words={words}/>
                 </Route>
               </Switch>
           </Suspense>

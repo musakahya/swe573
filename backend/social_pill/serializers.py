@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from .models import History
+from .models import History, Tweet
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,6 +8,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email')
+
+class TweetSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tweet
+        fields = ('id', 'user', 'search_term', 'date', 'tweet_text', 'tweet_entities', 'tweet_id', 'tweet_date', 'tweet_json')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
 

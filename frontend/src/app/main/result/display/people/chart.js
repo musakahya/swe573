@@ -30,8 +30,8 @@ const PeopleChart = ({ people }) => {
   useEffect(() => {
       if(people){
       let data = [];
-      for(let i = 0; i < Object.keys(people).length; i++){
-        data.push({x: Object.keys(people)[i], y: Object.values(people)[i]})
+      for(let i = 0; i < people.length && i < 10; i++){
+        data.push({x: people[i][0], y: people[i][1]})
       }
       setChartData(data);
     }

@@ -66,8 +66,15 @@ const Hashtags = ({ tweets }) => {
               }
           }
       })
-      console.log(h);
-      setHashtags(obj);
+      var sortable = [];
+      for (var o in obj) {
+        sortable.push([o, obj[o]]);
+      }
+      sortable.sort(function(a, b) {
+        return b[1] - a[1] ;
+    });
+      console.log(sortable);
+      setHashtags(sortable);
   }, [tweets])
 
   return (

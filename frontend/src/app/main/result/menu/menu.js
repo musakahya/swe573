@@ -75,8 +75,8 @@ const Menu = (props) => {
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'people' ? classes.selected : classes.button} onClick={() => {handleClick('people')}} variant="outlined" color="primary" component={Link} to={`/app/result/people/${location.search}`}>
-        People
+      <Button className={selected === 'mentions' ? classes.selected : classes.button} onClick={() => {handleClick('mentions')}} variant="outlined" color="primary" component={Link} to={`/app/result/people/${location.search}`}>
+        Mentions
       </Button>
       </Grid>
       <Grid item>
@@ -87,6 +87,11 @@ const Menu = (props) => {
       <Grid item>
       <Button className={selected === 'word_cloud' ? classes.selected : classes.button} onClick={() => {handleClick('word_cloud')}} variant="outlined" color="primary" component={Link} to={`/app/result/wordcloud/${location.search}`}>
         Word Cloud
+      </Button>
+      </Grid>
+      <Grid item>
+      <Button className={selected === 'cooccurrence' ? classes.selected : classes.button} onClick={() => {handleClick('cooccurrence')}} variant="outlined" color="primary" component={Link} to={`/app/result/cooccurrence/${location.search}`}>
+        Co-occurrence Graph (Bigram)
       </Button>
       </Grid>
       </Grid>

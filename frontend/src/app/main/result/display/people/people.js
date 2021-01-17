@@ -59,16 +59,22 @@ const People = ({ tweets }) => {
       let h = [];
       let obj = {};
       tweets.map((tweet) => {
-          console.log(tweet.entities);
           if(tweet.entities.user_mentions.length > 0){
               for(let i = 0; i < tweet.entities.user_mentions.length; i++){
-                console.log(tweet.entities.user_mentions[i]);
                 h.push(tweet.entities.user_mentions[i].name);
                 obj[tweet.entities.user_mentions[i].name] = (obj[tweet.entities.user_mentions[i].name] || 0) + 1 ;   
               }
           }
       })
-      setPeople(obj);
+      
+      var sortable = [];
+      for (var o in obj) {
+        sortable.push([o, obj[o]]);
+      }
+      sortable.sort(function(a, b) {
+        return b[1] - a[1] ;
+    });
+      setPeople(sortable);
   }, [tweets])
 
   return (
@@ -84,7 +90,7 @@ const People = ({ tweets }) => {
 <Grid item style={{marginTop: 21, marginBottom: 21}}>
 <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
-              People
+              Mentions
             </Typography>
 </Grid>
 <Grid item  xs={12}>

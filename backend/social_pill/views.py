@@ -2,7 +2,6 @@
 import json
 import tweepy
 import re
-import numpy as np
 import os
 from wordcloud import WordCloud, STOPWORDS
 from django.http import JsonResponse, HttpResponseRedirect
@@ -10,10 +9,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import date, datetime
+from textblob import TextBlob
+from django.db.models import Max
+from collections import Counter
 
 ## import models and serializers
 from .models import History, Tweet
-from .serializers import HistorySerializer, UserSerializer, UserSerializerWithToken
+from .serializers import HistorySerializer, UserSerializer, UserSerializerWithToken, TweetSerializer
 
 ## import rest_framework
 from rest_framework import status, permissions
@@ -22,58 +24,196 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
 
-def search(request):
-  data = []
-  tweetObjects = []
-  auth = tweepy.AppAuthHandler(os.getenv('TW_SECRET_ID'), os.getenv('TW_SECRET_KEY'))
-  api = tweepy.API(auth)
-  res = tweepy.Cursor(
-    api.search, 
-    q=request.GET.get('q', None).split('/?u=')[0],
-    lang='en',
-    count=10
-    ).items(10)
+## import libraries for the cooccurrence graph
+import itertools
+import collections
+import nltk
+from nltk import bigrams
+from nltk.corpus import stopwords
 
-  for tweet in res:
-    data.append(tweet._json)
-  
-  #Extract textfields from tweets
-  raw_tweets = []
+global_data = []
+
+def retrieveTweetsFromDatabase(keyword):
+  response = Tweet.objects.filter(search_term=keyword)
+  tweets = TweetSerializer(response, many=True)
+  arr = [tweets.data, response.aggregate(Max('tweet_id'))]
+  return arr
+
+def saveNewTweetsIntoDatabase(data, user, search_term):
+  tweetObjects = []
   for tweets in data:
-    raw_tweets.append(tweets['text'])
     tweetObjects.append(
       Tweet(
-        user=request.GET.get('q', None).split('/?u=')[1],
-        search_term=request.GET.get('q', None).split('/?u=')[0],
+        user=user,
+        search_term=search_term,
         date=datetime.now(),
         tweet_text=tweets['text'],
         tweet_entities=tweets['entities'],
         tweet_id=tweets["id"],
-        tweet_date=tweets["created_at"]
+        tweet_date=tweets["created_at"],
+        tweet_json=json.dumps(tweets)
       )
     )
-  
+  Tweet.objects.bulk_create(tweetObjects)
+
+def getTextFromTweet(data):
+  raw_tweets = []
+  for tweet in data:
+    raw_tweets.append(tweet["text"])
+  return raw_tweets
+
+def cleanTweets(raw_tweets):
   raw_string = ''.join(raw_tweets)
   no_links = re.sub(r'http\S+', '', raw_string)
   no_unicode = re.sub(r"\\[a-z][a-z]?[0-9]+", '', no_links)
   no_special_characters = re.sub('[^A-Za-z ]+', '', no_unicode)
+  return no_special_characters
 
-  words = no_special_characters.split(" ")
-  words = [w for w in words if len(w) > 2]  # ignore a, an, be, ...
-  words = [w.lower() for w in words]
-  words = [w for w in words if w not in STOPWORDS]
+def remove_url(txt):
+    """Replace URLs found in a text string with nothing 
+    (i.e. it will remove the URL from the string).
 
-  ## Add history
+    Parameters
+    ----------
+    txt : string
+        A text string that you want to parse and remove urls.
 
+    Returns
+    -------
+    The same txt string with url's removed.
+    """
+    
+    url_pattern = re.compile(r'https?://\S+|www\.\S+')
+    no_url = url_pattern.sub(r'', txt)
+
+    return no_url
+
+def saveHistory(request):
   History.objects.create(
             email_address=request.GET.get('q', None).split('/?u=')[1],
             search_term=request.GET.get('q', None).split('/?u=')[0],
             date=date.today(),
-        )
+  )
 
-  Tweet.objects.bulk_create(tweetObjects)
+def findWords(clean_tweets):
+  words = clean_tweets.split(" ")
+  words = [w for w in words if len(w) > 2]  # ignore a, an, be, ...
+  words = [w.lower() for w in words]
+  words = [w for w in words if w not in STOPWORDS]
+  return words
+
+def findMostCommonWords(lst):
+    data = Counter(lst)
+    return data.most_common(3)
+
+def queryTwitter(q, maxId):
+  auth = tweepy.AppAuthHandler(os.getenv('TW_SECRET_ID'), os.getenv('TW_SECRET_KEY'))
+  api = tweepy.API(auth)
+  res = tweepy.Cursor(
+    api.search, 
+    q=q,
+    lang='en',
+    count=100,
+    since_id=maxId
+    ).items(100)
+  return res
+
+def search(request):
+
+  # who is searching
+  user=request.GET.get('q', None).split('/?u=')[1]
+
+  # what is being searched
+  search_term=request.GET.get('q', None).split('/?u=')[0]
   
-  return JsonResponse({'response':data, 'words': words})
+  dbTweets = retrieveTweetsFromDatabase(request.GET.get('q', None).split('/?u=')[0])
+  
+  ## data dictionary is the container for tweets coming from the database and the Twitter API for the given search term
+  data = []
+  global_data = []
+
+  ## Add tweets coming from the database into data dictionary
+  for tweet in dbTweets[0]:
+    data.append(json.loads(tweet["tweet_json"]))
+
+  ## Query Twitter API for the given search term
+  res = queryTwitter(request.GET.get('q', None).split('/?u=')[0], dbTweets[1])
+
+  ## Add tweets coming from Twitter into the new_tweets dictionary
+  new_tweets = []
+  for tweet in res:
+    new_tweets.append(tweet._json)
+
+  ## Merge new_tweets with the data dictionary
+  for item in new_tweets:
+    data.append(item)
+
+  ## Save new tweets into the database
+  saveNewTweetsIntoDatabase(new_tweets, user, search_term)
+
+  ## Get text attribute from the Tweet object
+  raw_tweets = getTextFromTweet(data)
+
+  ## Clean tweets
+  clean_tweets = cleanTweets(raw_tweets)
+
+  ## Find words
+  words = findWords(clean_tweets)
+
+  ## Save new search into the history table
+  saveHistory(request)
+
+  global_data = data
+
+  return JsonResponse({'response':data[:1000], 'words': words})
+
+@csrf_exempt
+def cooccurrence(request):
+  
+  ## Get text attribute from the Tweet object
+  raw_tweets = json.loads(request.body.decode('utf-8'))["tweets"]
+
+  # Remove URLs
+  tweets_no_urls = [remove_url(tweet) for tweet in raw_tweets]
+
+  # Create a sublist of lower case words for each tweet
+  words_in_tweet = [tweet.lower().split() for tweet in tweets_no_urls]
+
+  # Download stopwords
+  nltk.download('stopwords')
+  stop_words = set(stopwords.words('english'))
+
+  # Remove stop words from each tweet list of words
+  tweets_nsw = [[word for word in tweet_words if not word in stop_words]
+              for tweet_words in words_in_tweet]
+
+  # Create list of lists containing bigrams in tweets
+  terms_bigram = [list(bigrams(tweet)) for tweet in tweets_nsw]
+
+  # Flatten list of bigrams in clean tweets
+  bigrams2 = list(itertools.chain(*terms_bigram))
+
+  # Create counter of words in clean bigrams
+  bigram_counts = collections.Counter(bigrams2)
+
+  return JsonResponse({'bigram': bigram_counts.most_common(50)})
+
+
+@csrf_exempt
+def sentiment(request):
+  neg = []
+  pos= []  
+  neut = []
+  for tweet in json.loads(request.body.decode('utf-8'))["tweets"]:
+    blob = TextBlob(tweet)
+    if blob.sentiment.polarity < 0:         #Negative
+      neg.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+    elif blob.sentiment.polarity == 0:      #Neutral
+      neut.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+    else:                                   #Positive
+      pos.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+
+  return JsonResponse({'neg': neg, 'pos': pos, 'neut': neut})
 
 @api_view(('POST', 'GET'))
 @csrf_exempt
@@ -93,7 +233,7 @@ def history(request):
     except Exception:
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
   elif request.method == 'GET':
-    history = History.objects.filter(email_address=request.user)
+    history = History.objects.filter(email_address=request.user).order_by('-date')
     serializer = HistorySerializer(history, many=True)
     return Response(serializer.data)
 

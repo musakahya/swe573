@@ -37,9 +37,13 @@ const Signup = ({}) => {
     },
     button: {
       textTransform: 'capitalize',
-      backgroundColor: '#FFFFFF',
-      
-  }
+      backgroundColor: '#FFFFFF',    
+  },
+  button_right: {
+    textTransform: 'capitalize',
+    backgroundColor: '#FFFFFF',
+    marginLeft: theme.spacing(52)
+},
   }));
 
   const themeTextField = createMuiTheme({
@@ -197,7 +201,7 @@ return (
       </Button>
         </Grid>
         <Grid item>
-        <Button className={classes.button} variant="outlined" color="primary" component={Link} to={"/app/login"}>
+        <Button className={classes.button_right} variant="outlined" color="primary" component={Link} to={"/app/login"}>
         Sign In
       </Button>
         </Grid>

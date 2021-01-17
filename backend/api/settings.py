@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'backend',
-    'localhost'
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0'
 ]
 
 
@@ -90,6 +92,7 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'https://localhost:3000',
 )
 
 JWT_AUTH = {
@@ -147,4 +150,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_URL = '/django_static/' 
+STATIC_ROOT = BASE_DIR / 'django_static'

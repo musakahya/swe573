@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Link } from 'react-router-dom';
 import TablePagination from '@material-ui/core/TablePagination';
+import Button from '@material-ui/core/Button';
+import Popup from "shared_resources/components/popup/popup";
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -18,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
     
     
   },
+  button: {
+    textTransform: 'capitalize',
+    backgroundColor: '#FFFFFF',    
+},
   cell: {
     fontSize: 14,
   },
@@ -29,21 +35,37 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-  function Row(props) {
-    const { row } = props;
+  function Row({ setPopupState, popupState, setCurrentRow, key, row }) {
+
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
+
+    const handlePopup = (row) => {
+      if(popupState === "init"){
+        setPopupState(true);
+      }
+      else if (popupState === true) setPopupState(false);
+      else if (popupState === false) setPopupState(true);
+      else;
+      setCurrentRow(row);
+      
+    }
   
     return (
       <>
         <TableRow
                 hover
-                key={row.id}
+                key={key}
                 component={Link}
                 style={{ textDecoration: 'none' }}
               >
                 <TableCell className={classes.cell} component="th" scope="row">{row.text}</TableCell>
                 <TableCell className={classes.cell} component="th" scope="row">{row.created_at}</TableCell>
+                <TableCell className={classes.cell} component="th" scope="row">
+                <Button onClick={() => handlePopup(row)} className={classes.button} variant="outlined" color="primary" size="small">
+                  See More
+                </Button>
+                  </TableCell>
               </TableRow>
       </>
     );
@@ -52,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
   export default function TweetsTable(props) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(20);
+
+    const [openPopup, setPopup] = React.useState(false);
+    const [currentRow, setCurrentRow] = React.useState("");
+    const [popupState, setPopupState] = React.useState("init")
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -61,6 +87,11 @@ const useStyles = makeStyles((theme) => ({
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+    useEffect(() => {
+      if(popupState === "init");
+      else setPopup(true);
+    }, [popupState])
   
     return (
 
@@ -68,6 +99,11 @@ const useStyles = makeStyles((theme) => ({
       padding: 0,
       margin: 0
     }}>
+      <Popup
+        open={openPopup}
+        setOpen={setPopup}
+        row={currentRow}
+      />
       <TableContainer style={{
         width: '100%',
         padding: 0,
@@ -84,6 +120,9 @@ const useStyles = makeStyles((theme) => ({
                 Date
                 {' '}
               </TableCell>
+              <TableCell style={{fontSize: 14}}>
+                
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -93,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage,
                     )
-                    .map((row) => <Row key={row.id} row={row} />)
+                    .map((row) => <Row popupState={popupState} setPopupState={setPopupState} setCurrentRow={setCurrentRow} key={row.id} row={row} />)
                   : ''}
           </TableBody>
         </Table>

@@ -91,18 +91,7 @@ const History = ({ rows, setRows}) => {
     <div>
       <Card elevation={0} className={classes.root}>
         <CardHeader
-          action={
-            <Button
-              className={classes.button_see_all}
-              endIcon={<ArrowForwardIcon />}
-              component={Link}
-              to="/app/history"
-              variant="outlined" color="primary"
-              size="small"
-            >
-              See Full History
-            </Button>
-          }
+
           title="My Search History"
           titleTypographyProps={{
 

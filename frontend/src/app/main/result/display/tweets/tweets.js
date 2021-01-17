@@ -63,7 +63,7 @@ const Tweets = ({ tweets }) => {
 </Grid>
 <Grid item  xs={12}>
   <div className={classes.info}>
-  <div><strong>Most popular 100</strong> tweets are displayed from the last 7 days.</div>
+  <div><strong>Most recent 100</strong> tweets are displayed from the last 7 days.</div>
   </div>
 </Grid>
 <Grid item  className={classes.table}>

@@ -90,13 +90,13 @@ const useStyles = makeStyles((theme) => ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(props.rows)
-                  ? Object.keys(props.rows)
+            {props.rows
+                  ? props.rows
                     .slice(
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage,
                     )
-                    .map((row) => <Row id={row} value={props.rows[row]} />)
+                    .map((row) => <Row id={row[0]} value={row[1]} />)
                   : ''}
           </TableBody>
         </Table>

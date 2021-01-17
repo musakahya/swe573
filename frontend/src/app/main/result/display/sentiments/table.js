@@ -38,18 +38,19 @@ const useStyles = makeStyles((theme) => ({
       <>
         <TableRow
                 hover
-                key={props.id}
                 component={Link}
                 style={{ textDecoration: 'none' }}
               >
-                <TableCell className={classes.cell} component="th" scope="row">{props.id}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">{props.value}</TableCell>
+                <TableCell className={classes.cell} component="th" scope="row">{props.tweet}</TableCell>
+                <TableCell className={classes.cell} component="th" scope="row">{props.polarity}</TableCell>
               </TableRow>
       </>
     );
   }
 
-  export default function PeopleTable(props) {
+  export default function SentimentTable(props) {
+
+    console.log(props);
 
     let rows = [];
 
@@ -74,7 +75,8 @@ const useStyles = makeStyles((theme) => ({
       <TableContainer style={{
         width: '100%',
         padding: 0,
-        margin: 0
+        margin: 0,
+        maxHeight: 500
       }}>
         <Table
           stickyHeader
@@ -82,9 +84,9 @@ const useStyles = makeStyles((theme) => ({
         >
           <TableHead>
             <TableRow>
-              <TableCell style={{fontSize: 14}}>Screen Name</TableCell>
+              <TableCell style={{fontSize: 14}}>Tweet</TableCell>
               <TableCell style={{fontSize: 14}}>
-                Number of Mentions
+                Polarity
                 {' '}
               </TableCell>
             </TableRow>
@@ -92,24 +94,12 @@ const useStyles = makeStyles((theme) => ({
           <TableBody>
             {props.rows
                   ? props.rows
-                    .slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage,
-                    )
-                    .map((row) => <Row id={row[0]} value={row[1]} />)
+                    .map((row) => <Row tweet={row.tweet} polarity={row.polarity}/>)
                   : ''}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
-            component="div"
-            count={Object.keys(props.rows) ? Object.keys(props.rows).length : 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+
     </div>
   );
 };

@@ -25,6 +25,7 @@ class Tweet(models.Model):
   tweet_entities = models.TextField()
   tweet_id = models.TextField()
   tweet_date = models.TextField()
+  tweet_json = models.TextField()
 
   def _str_(self):
     return self.id

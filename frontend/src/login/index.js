@@ -40,10 +40,13 @@ const Login = ({}) => {
       textTransform: 'capitalize',
       backgroundColor: '#FFFFFF',
   },
-  fields: {
+  button_right: {
+    textTransform: 'capitalize',
     backgroundColor: '#FFFFFF',
-    borderColor: "rgba(0,40,100,.12)",
-    boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
+    marginLeft: theme.spacing(52)
+},
+  fields: {
+
   }
   }));
 
@@ -199,7 +202,7 @@ return (
         container
         direction="row"
         justify="flex-start"
-        alignItems="flex-start"
+        alignItems="space-between"
         style={{ flexWrap: "nowrap", width: '%100' }}
         spacing={3}
       >
@@ -209,7 +212,7 @@ return (
       </Button>
         </Grid>
         <Grid item>
-        <Button className={classes.button} variant="outlined" color="primary" component={Link} to={"/app/signup"}>
+        <Button className={classes.button_right} variant="outlined" color="primary" component={Link} to={"/app/signup"}>
         Sign Up
       </Button>
         </Grid>

@@ -165,9 +165,9 @@ const Search = ({ historyData }) => {
             direction="row"
             justify="flex-start"
             alignItems="center"
-            style={{ flexWrap: "nowrap", width: window.innerWidth - 64 }}
+            style={{ flexWrap: "nowrap", width: window.innerWidth - 108 }}
           >
-            <Grid item xs={11} style={{ backgroundColor: '#FFFFFF', marginRight: 18 }}>
+            <Grid item xs={12} style={{ backgroundColor: '#FFFFFF', marginRight: 18 }}>
             <Autocomplete
               open={popupOpen}
               onClose={() => handlePopup("close")}
@@ -190,13 +190,6 @@ const Search = ({ historyData }) => {
                 </MuiThemeProvider>
               )}
             />
-            </Grid>
-            <Grid item  style={{ backgroundColor: '#3F51B5', borderRadius: '3px',
-      border: '1px solid rgba(0,40,100,.12)', boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',}}>
-
-            <IconButton onClick={() => handleInput(input)} style={{ color: '#FFFFFF',  width: 60, height: 52 }}>
-        <ArrowForwardIcon style={{ fontSize: '32px' }} />
-      </IconButton>
             </Grid>
           </Grid>
         </Grid>
