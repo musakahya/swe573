@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { RadialChart, FlexibleXYPlot } from 'react-vis'
 import SentimentTable from './table';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Sentiments = ({ tweets }) => {
 
@@ -51,6 +52,10 @@ marginBottom: 21
   paddingRight: theme.spacing(2),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1)
+  },
+  loading: {
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
   }
       
   }));
@@ -112,17 +117,45 @@ marginBottom: 21
         className={classes.table}
       >
 <Grid item xs={5} className={classes.section_left}>
- 
-    <RadialChart
-            data={[{angle: pos.length, label: `Positive (${Math.round(pos.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neg.length, label: `Negative (${Math.round(neg.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neut.length, label: `Neutral: (${Math.round(neut.length/(pos.length+neg.length+neut.length)*100)}%)`}]}
+ {pos.length > 0 ? 
+ <RadialChart
+ data={[{angle: pos.length, label: `Positive (${Math.round(pos.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neg.length, label: `Negative (${Math.round(neg.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neut.length, label: `Neutral: (${Math.round(neut.length/(pos.length+neg.length+neut.length)*100)}%)`}]}
 width={650}
 height={500}
 showLabels={true}
 labelsAboveChildren={true}
-        />  
+/>  
+ : 
+ <Grid
+ container
+ direction="column"
+ alignItems="center"
+ justify="center"
+ className={classes.loading}
+>
+ <Grid item>
+ <CircularProgress />
+ </Grid>
+</Grid>
+ }
+    
 </Grid>
 <Grid  item xs={7} className={classes.section}>
+{pos.length > 0 ? 
 <SentimentTable rows={pos.concat(neut).concat(neg)}/> 
+: 
+<Grid
+container
+direction="column"
+alignItems="center"
+justify="center"
+className={classes.loading}
+>
+<Grid item>
+<CircularProgress />
+</Grid>
+</Grid>
+}
   </Grid>
   </Grid>
       </Grid>

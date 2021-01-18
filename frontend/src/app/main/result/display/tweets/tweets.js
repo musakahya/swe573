@@ -3,9 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TweetsTable from './table';
-import TweetsFilters from './filters';
-import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Tweets = ({ tweets }) => {
 
@@ -40,6 +38,10 @@ const Tweets = ({ tweets }) => {
     paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
+    },
+    loading: {
+      marginBottom: theme.spacing(3),
+      marginTop: theme.spacing(3),
     }
   }));
 
@@ -68,7 +70,19 @@ const Tweets = ({ tweets }) => {
 </Grid>
 <Grid item  className={classes.table}>
   
-{tweets && tweets.length > 0 ? <TweetsTable rows={tweets}/> : null}
+{tweets && tweets.length > 0 ? <TweetsTable rows={tweets}/> : 
+<Grid
+              container
+              direction="column"
+              alignItems="center"
+              justify="center"
+              className={classes.loading}
+            >
+              <Grid item>
+              <CircularProgress />
+              </Grid>
+            </Grid>
+}
 
 </Grid>
       </Grid>

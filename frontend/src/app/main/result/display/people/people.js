@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import PeopleChart from './chart';
 import PeopleTable from './table';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const People = ({ tweets }) => {
 
@@ -49,6 +50,10 @@ const People = ({ tweets }) => {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
     },
+    loading: {
+      marginBottom: theme.spacing(3),
+      marginTop: theme.spacing(3),
+    }
   }));
 
   const classes = useStyles();

@@ -16,7 +16,7 @@ import {
   const Sentiments = lazy(() => import('./sentiments/sentiments'));
   const Cooccurrence = lazy(() => import('./cooccurrence/cooccurrence'));
 
-const Display = (props) => {
+const Display = ({ setLoading }) => {
   
   let location = useLocation();
 
@@ -39,6 +39,7 @@ const Display = (props) => {
     .then((res) => {
         setTweets(res.data.response);
         setWords(res.data.words);
+        setLoading(false);
     })
     .catch((err) => {
         console.log(err);

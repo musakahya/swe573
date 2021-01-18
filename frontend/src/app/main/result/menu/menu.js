@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
 import { Link, useLocation } from 'react-router-dom';
 
-const Menu = (props) => {
+const Menu = ({ loading }) => {
   useEffect(() => { }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -70,27 +70,27 @@ const Menu = (props) => {
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'hashtags' ? classes.selected : classes.button} onClick={() => {handleClick('hashtags')}} variant="outlined" color="primary" component={Link} to={`/app/result/hashtags/${location.search}`}>
+      <Button disabled={loading} className={selected === 'hashtags' ? classes.selected : classes.button} onClick={() => {handleClick('hashtags')}} variant="outlined" color="primary" component={Link} to={`/app/result/hashtags/${location.search}`}>
         Hashtags
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'mentions' ? classes.selected : classes.button} onClick={() => {handleClick('mentions')}} variant="outlined" color="primary" component={Link} to={`/app/result/people/${location.search}`}>
+      <Button disabled={loading} className={selected === 'mentions' ? classes.selected : classes.button} onClick={() => {handleClick('mentions')}} variant="outlined" color="primary" component={Link} to={`/app/result/people/${location.search}`}>
         Mentions
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'sentiments' ? classes.selected : classes.button} onClick={() => {handleClick('sentiments')}} variant="outlined" color="primary" component={Link} to={`/app/result/sentiments/${location.search}`}>
+      <Button disabled={loading} className={selected === 'sentiments' ? classes.selected : classes.button} onClick={() => {handleClick('sentiments')}} variant="outlined" color="primary" component={Link} to={`/app/result/sentiments/${location.search}`}>
         Sentiments
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'word_cloud' ? classes.selected : classes.button} onClick={() => {handleClick('word_cloud')}} variant="outlined" color="primary" component={Link} to={`/app/result/wordcloud/${location.search}`}>
+      <Button disabled={loading} className={selected === 'word_cloud' ? classes.selected : classes.button} onClick={() => {handleClick('word_cloud')}} variant="outlined" color="primary" component={Link} to={`/app/result/wordcloud/${location.search}`}>
         Word Cloud
       </Button>
       </Grid>
       <Grid item>
-      <Button className={selected === 'cooccurrence' ? classes.selected : classes.button} onClick={() => {handleClick('cooccurrence')}} variant="outlined" color="primary" component={Link} to={`/app/result/cooccurrence/${location.search}`}>
+      <Button disabled={loading} className={selected === 'cooccurrence' ? classes.selected : classes.button} onClick={() => {handleClick('cooccurrence')}} variant="outlined" color="primary" component={Link} to={`/app/result/cooccurrence/${location.search}`}>
         Co-occurrence Graph (Bigram)
       </Button>
       </Grid>

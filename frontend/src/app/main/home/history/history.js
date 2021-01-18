@@ -17,6 +17,7 @@ import axios from 'axios';
 import UserContext from 'shared_resources/context/user_context';
 import HistoryTable from './history_table';
 import ColoredLinearProgress from 'shared_resources/components/linear_progress/linear_progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,7 +119,17 @@ const History = ({ rows, setRows}) => {
               </Grid>
             </Grid>
           ) : (
-            <div />
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              justify="center"
+              className={classes.table}
+            >
+              <Grid item>
+              <CircularProgress />
+              </Grid>
+            </Grid>
           )}
         </CardContent>
       </Card>
