@@ -187,6 +187,10 @@ def cooccurrence(request):
   tweets_nsw = [[word for word in tweet_words if not word in stop_words]
               for tweet_words in words_in_tweet]
 
+  # Remove mentions and short words with one or two letters from each tweet list of words
+  tweets_nsw = [[word for word in tweet_words if not word.startswith('@') and len(word) > 2]
+              for tweet_words in words_in_tweet]
+
   # Create list of lists containing bigrams in tweets
   terms_bigram = [list(bigrams(tweet)) for tweet in tweets_nsw]
 
