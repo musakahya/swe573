@@ -54,6 +54,7 @@ const WordCloud = ({ words }) => {
         if(word !== location.search.split('?q=')[1]) obj[word] = (obj[word] || 0) + 1 ;   
     })
     setWordCount(obj);
+    
 }, [words])
 
 useEffect(() => {
@@ -63,6 +64,9 @@ useEffect(() => {
         arr.push({text: Object.keys(wordCount)[i], value: wordCount[Object.keys(wordCount)[i]]})
     }
     setWordsArr(arr);
+    console.log(arr.sort(function(a, b) {
+      return a[1] - b[1];
+  }));
 }
 }, [wordCount])
 
