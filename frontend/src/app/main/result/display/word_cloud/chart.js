@@ -10,7 +10,7 @@ const callbacks = {
     enableTooltip: true,
     deterministic: false,
     fontFamily: "impact",
-    fontSizes: [20, 120],
+    fontSizes: [5, 120],
     fontStyle: "normal",
     fontWeight: "normal",
     rotations: 3,
