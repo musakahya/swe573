@@ -51,7 +51,7 @@ const WordCloud = ({ words }) => {
   useEffect(() => {
     let obj = {};
     words.map((word) => {
-        if(word !== location.search.split('?q=')[1]) obj[word] = (obj[word] || 0) + 1 ;   
+        if(!word.includes(location.search.split('?q=')[1])) obj[word] = (obj[word] || 0) + 1 ;   
     })
     setWordCount(obj);
     
