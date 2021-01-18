@@ -30,6 +30,7 @@ function App() {
         .then(res => res.json())
         .then(json => {
           setUser({ username: json.username, email: json.email_address });
+          setLoading(false);
         });
     }
   }, [])
@@ -40,7 +41,7 @@ function App() {
       <userContext.Provider value={{ user, setUser }}>
           <div>
             <Suspense fallback={<div>Loading...</div>}>
-              
+            {!loading ? (
                 <Switch>
                   <Route exact path="/app/login">
                     {user.username !== "" ? (
@@ -75,6 +76,9 @@ function App() {
                     )}
                   </Route>
                 </Switch>
+                ) : (
+                  ''
+                )}
             </Suspense>
           </div>
       </userContext.Provider>
