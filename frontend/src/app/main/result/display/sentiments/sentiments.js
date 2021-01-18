@@ -114,7 +114,7 @@ marginBottom: 21
 <Grid item xs={5} className={classes.section_left}>
  
     <RadialChart
-            data={[{angle: pos.length, label: `Positive (${pos.length/(pos.length+neg.length+neut.length)*100}%)`}, {angle: neg.length, label: `Negative (${neg.length/(pos.length+neg.length+neut.length)*100}%)`}, {angle: neut.length, label: `Neutral: (${neut.length/(pos.length+neg.length+neut.length)*100}%)`}]}
+            data={[{angle: pos.length, label: `Positive (${Math.round(pos.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neg.length, label: `Negative (${Math.round(neg.length/(pos.length+neg.length+neut.length)*100)}%)`}, {angle: neut.length, label: `Neutral: (${Math.round(neut.length/(pos.length+neg.length+neut.length)*100)}%)`}]}
 width={650}
 height={500}
 showLabels={true}
