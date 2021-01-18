@@ -65,6 +65,16 @@ const useStyles = makeStyles((theme) => ({
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+      function compare( a, b ) {
+        if ( a.polarity < b.polarity ){
+          return 1;
+        }
+        if ( a.polarity > b.polarity ){
+          return -1;
+        }
+        return 0;
+      }
   
     return (
 
@@ -93,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
           </TableHead>
           <TableBody>
             {props.rows
-                  ? props.rows
+                  ? props.rows.sort(compare)
                     .map((row) => <Row tweet={row.tweet} polarity={row.polarity}/>)
                   : ''}
           </TableBody>

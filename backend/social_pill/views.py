@@ -211,11 +211,11 @@ def sentiment(request):
   for tweet in json.loads(request.body.decode('utf-8'))["tweets"]:
     blob = TextBlob(tweet)
     if blob.sentiment.polarity < 0:         #Negative
-      neg.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+      neg.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
     elif blob.sentiment.polarity == 0:      #Neutral
-      neut.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+      neut.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
     else:                                   #Positive
-      pos.append({"tweet": tweet, "polarity": blob.sentiment.polarity})
+      pos.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
 
   return JsonResponse({'neg': neg, 'pos': pos, 'neut': neut})
 
