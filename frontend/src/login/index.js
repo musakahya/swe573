@@ -114,10 +114,10 @@ const Login = ({}) => {
       .then(res => res.json())
       .then(json => {
         localStorage.setItem('token', json.token);
+        localStorage.setItem('user', json.user.username);
         setDisplayedForm('');
         setLoggedIn(true);
         setUsername(json.user.username);
-        console.log(json);
         setUser({
           username: json.user.username,
           email: json.user.email_address,
