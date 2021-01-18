@@ -111,7 +111,7 @@ def queryTwitter(q, maxId):
   api = tweepy.API(auth)
   res = tweepy.Cursor(
     api.search, 
-    q=q,
+    q=q + ' -filter:retweets',
     lang='en',
     count=100,
     since_id=maxId
