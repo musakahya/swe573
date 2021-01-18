@@ -11,3 +11,4 @@ docker-compose.yml
 ./helm
 ./docker
 ~
+docker-compose.yml
