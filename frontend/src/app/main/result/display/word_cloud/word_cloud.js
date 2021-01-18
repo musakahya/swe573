@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import WordCloudChart from './chart';
 import { Link, useLocation } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const WordCloud = ({ words }) => {
 
@@ -38,6 +39,10 @@ const WordCloud = ({ words }) => {
     paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
+    },
+    loading: {
+      marginBottom: theme.spacing(5),
+      marginTop: theme.spacing(5),
     }
   }));
 
@@ -97,7 +102,19 @@ useEffect(() => {
 </Grid>
 <Grid item  className={classes.table}>
   
-{wordsArr && wordsArr.length > 0 ? <WordCloudChart words={wordsArr} /> : null}
+{wordsArr && wordsArr.length > 0 ? <WordCloudChart words={wordsArr} /> : 
+ <Grid
+ container
+ direction="column"
+ alignItems="center"
+ justify="center"
+ className={classes.loading}
+>
+ <Grid item>
+ <CircularProgress />
+ </Grid>
+</Grid>
+}
 
 </Grid>
       </Grid>

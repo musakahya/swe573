@@ -20,6 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Styling begins
 
@@ -87,7 +88,7 @@ const Search = ({ historyData }) => {
   const [selected, setSelected] = useState("");
   const [input, setInput] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
-  const [tweetCount, setTweetCount] = useState(0);
+  const [tweetCount, setTweetCount] = useState();
 
   function handleChange(e) {
     setSelected(e.target.value);
@@ -206,7 +207,7 @@ const Search = ({ historyData }) => {
           >
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
-              Dashboard
+              Your Dashboard
             </Typography>
           </Grid>
         </Grid>
@@ -230,7 +231,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {historyData.length}
+              {historyData.length ? historyData.length : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>
@@ -252,7 +253,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {tweetCount}
+              {tweetCount ? tweetCount : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>

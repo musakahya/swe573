@@ -24,11 +24,13 @@ const Result = (props) => {
 
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(true);
+
   return (
     <div className={classes.paper}>
 
-      <Menu />
-      <Display />
+      <Menu loading={loading} />
+      <Display setLoading={setLoading}/>
 
     </div>
   );

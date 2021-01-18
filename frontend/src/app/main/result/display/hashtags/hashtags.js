@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import HashtagsChart from './chart';
 import HashtagsTable from './table';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Hashtags = ({ tweets }) => {
 
@@ -48,6 +49,10 @@ const Hashtags = ({ tweets }) => {
     paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1)
+    },
+    loading: {
+      marginBottom: theme.spacing(3),
+      marginTop: theme.spacing(3),
     }
   }));
 
@@ -73,7 +78,6 @@ const Hashtags = ({ tweets }) => {
       sortable.sort(function(a, b) {
         return b[1] - a[1] ;
     });
-      console.log(sortable);
       setHashtags(sortable);
   }, [tweets])
 
@@ -100,11 +104,35 @@ const Hashtags = ({ tweets }) => {
 </Grid>
 <Grid item  className={classes.chart}>
   
-<HashtagsChart hashtags={hashtags}/>
+{hashtags && hashtags.length > 0 ? <HashtagsChart hashtags={hashtags}/> :
+<Grid
+              container
+              direction="column"
+              alignItems="center"
+              justify="center"
+              className={classes.loading}
+            >
+              <Grid item>
+              <CircularProgress />
+              </Grid>
+            </Grid>
+}
 
 </Grid>
 <Grid item xs={12} className={classes.table}>
-  {hashtags ? <HashtagsTable rows={hashtags}/> : null}
+  {hashtags ? <HashtagsTable rows={hashtags}/> : 
+  <Grid
+  container
+  direction="column"
+  alignItems="center"
+  justify="center"
+  className={classes.loading}
+>
+  <Grid item>
+  <CircularProgress />
+  </Grid>
+</Grid>
+  }
   </Grid>
       </Grid>
     </div>
