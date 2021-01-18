@@ -22,14 +22,14 @@ function App() {
 
   useEffect(() => {
     if(localStorage.getItem('token')){
-      fetch('http://localhost:8000/social_pill/current_user/', {
+      fetch('http://localhost:8000/social_pill/current_user', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
       })
         .then(res => res.json())
         .then(json => {
-          setUser({ username: json.username, email: json.email_address });
+          setUser({ username: localStorage.getItem('user'), email: localStorage.getItem('user') });
           setLoading(false);
         });
     }

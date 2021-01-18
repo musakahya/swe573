@@ -249,14 +249,16 @@ def tweet(request):
     return Response(tweets)
 
 
-@api_view(['GET'])
+@api_view(['POST', 'GET'])
 @csrf_exempt
 def current_user(request):
     """
     Determine the current user by their token, and return their data
     """
-    
+    print("hereee")
     serializer = UserSerializer(request.user)
+    print(request.user)
+    print(serializer.data)
     return Response(serializer.data)
 
 

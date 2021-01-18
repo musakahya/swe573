@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token
-from social_pill.views import search, history, tweet, sentiment, cooccurrence
+from social_pill.views import search, history, tweet, sentiment, cooccurrence, current_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/tweet/', tweet, name="tweet"),
     path('api/sentiment/', sentiment, name="sentiment"),
     path('api/cooccurrence/', cooccurrence, name="cooccurrence"),
-    path('social_pill/', include('social_pill.urls'))
+    #path('social_pill/', include('social_pill.urls')),
+    path('social_pill/current_user', current_user, name="current_user")
 ]
