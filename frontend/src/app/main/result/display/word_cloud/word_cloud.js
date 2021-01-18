@@ -63,10 +63,10 @@ useEffect(() => {
     for(let i = 0; i < Object.keys(wordCount).length; i++){
         arr.push({text: Object.keys(wordCount)[i], value: wordCount[Object.keys(wordCount)[i]]})
     }
-    setWordsArr(arr);
-    console.log(arr.sort(function(a, b) {
-      return a[1] - b[1];
-  }));
+    let ordered = arr.sort(function(a, b) {
+      return b.value - a.value;
+  });
+  setWordsArr(ordered.slice(0, 100));
 }
 }, [wordCount])
 
