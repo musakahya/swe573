@@ -152,7 +152,7 @@ const onClickLink = function(source, target) {
 <Grid item  xs={12}>
   <div className={classes.info}>
   <div>
-    Bigram co-occurrence graph shows the network between most used 50 bigrams across the tweets for the given search term.
+  <strong>{tweets ? tweets.length : 0}</strong> tweets are processed. Bigram co-occurrence graph shows the network between most used 50 bigrams across the tweets for the given search term.
   </div>
   </div>
 </Grid>

@@ -6,7 +6,7 @@ import WordCloudChart from './chart';
 import { Link, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const WordCloud = ({ words }) => {
+const WordCloud = ({ tweets, words }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -97,7 +97,7 @@ useEffect(() => {
   <div><strong>Most used </strong> words are displayed in a word cloud format based on the following criteria.</div><br/>
   <li>Words that do not contribute to the meaning are eliminated.</li>
   <li>{`The search term, ${location.search.split('?q=')[1]}, is not included.`}</li>
-  <li>Tweets from only last 7 days are included.</li>
+  <li>{tweets.length} tweets are processed.</li>
   </div>
 </Grid>
 <Grid item  className={classes.table}>

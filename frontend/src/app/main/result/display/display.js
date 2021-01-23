@@ -60,7 +60,7 @@ const Display = ({ setLoading }) => {
                     <People tweets={tweets}/>
                 </Route>
                 <Route path="/app/result/wordcloud">
-                    <WordCloud words={words}/>
+                    <WordCloud words={words} tweets={tweets}/>
                 </Route>
                 <Route path="/app/result/sentiments">
                     <Sentiments tweets={tweets}/>

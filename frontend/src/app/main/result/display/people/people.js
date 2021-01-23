@@ -100,7 +100,7 @@ const People = ({ tweets }) => {
 </Grid>
 <Grid item  xs={12}>
   <div className={classes.info}>
-  <div><strong>Most frequently</strong> mentioned people are displayed from the last 7 days.</div>
+  <div><strong>Most frequently</strong> mentioned people/organizations are displayed from <strong>{tweets ? tweets.length : 0} </strong>tweets.</div>
   </div>
 </Grid>
 <Grid item xs={12} >
