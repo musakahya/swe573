@@ -99,7 +99,7 @@ const Hashtags = ({ tweets }) => {
 </Grid>
 <Grid item  xs={12}>
   <div className={classes.info}>
-  <div><strong>Most popular</strong> hashtags are displayed from the last 7 days.</div>
+  <div><strong>Most popular</strong> hashtags are displayed from <strong>{tweets ? tweets.length : 0} </strong> tweets.</div>
   </div>
 </Grid>
 <Grid item  className={classes.chart}>

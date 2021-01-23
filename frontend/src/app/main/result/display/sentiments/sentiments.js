@@ -105,7 +105,7 @@ marginBottom: 21
 </Grid>
 <Grid item  xs={12}>
   <div className={classes.info}>
-  <div>Tweets are grouped into three sentiment categories: positive, neutral and negative. Polarity value ranges between 1 (positive) and -1 (negative).</div>
+  <div><strong>{tweets ? tweets.length : 0} </strong>tweets are grouped into three sentiment categories: positive, neutral and negative. Polarity value ranges between 1 (positive) and -1 (negative).</div>
   </div>
 </Grid>
 <Grid
