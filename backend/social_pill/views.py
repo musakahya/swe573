@@ -163,6 +163,8 @@ def search(request):
   ## Save new search into the history table
   saveHistory(request)
 
+  data = sorted(data, key=lambda k: k['id'], reverse=True) 
+
   global_data = data
 
   return JsonResponse({'response':data[:1000], 'words': words})
