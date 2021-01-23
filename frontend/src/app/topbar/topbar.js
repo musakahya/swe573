@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import UserContext from 'shared_resources/context/user_context';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const TopBar = ({}) => {
   const useStyles = makeStyles((theme) => ({
@@ -82,11 +83,15 @@ const TopBar = ({}) => {
       marginLeft: theme.spacing(3),
       marginTop: theme.spacing(3),
       color: '#495057',
-      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif'
+      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+      cursor: 'pointer',
+      textDecoration: 'none'
     },
     logo: {
       marginLeft: theme.spacing(7),
       marginTop: theme.spacing(0.5),
+      cursor: 'pointer',
+      textDecoration: 'none'
     },
     user: {
       color: '#000000', 
@@ -95,7 +100,11 @@ const TopBar = ({}) => {
       textTransform: 'capitalize',
       backgroundColor: '#FFFFFF',
       marginRight: theme.spacing(8)
-  }
+  },
+   pointer: {
+     cursor: 'pointer',
+     textDecoration: 'none'
+   }
   }));
 
   const classes = useStyles();
@@ -134,17 +143,23 @@ const TopBar = ({}) => {
   justify="flex-start"
   alignItems="center"
             >
-              <Grid item>
+              <Grid item classNAme={classes.pointer}>
       <img
             className={classes.logo}
             src="/logo.png"
             align="middle"
             height="48"
             width="48"
+            component={Link}
+            to={'/app'}
           />
         </Grid>
-        <Grid item>
-          <h1 className={classes.text}>Social Pill</h1>
+        <Grid item style={{textDecoration: 'none'}} component={Link}
+          to={'/app'}>
+          <h1 
+          className={classes.text}
+          >Social Pill
+          </h1>
           </Grid>
           </Grid>
           </Grid>
