@@ -1,6 +1,4 @@
 import React, { Component, useEffect, useContext } from 'react';
-import LoginForm from './login_form';
-import SignupForm from './signup_form';
 import Grid from "@material-ui/core/Grid";
 import {
   makeStyles,
@@ -15,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 import { Link } from 'react-router-dom';
 import UserContext from 'shared_resources/context/user_context';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 const Login = ({}) => {
 
@@ -31,22 +30,24 @@ const Login = ({}) => {
       ...theme.mixins.toolbar,
     },
     content: {
-      paddingTop: theme.spacing(7),
+      paddingTop: theme.spacing(15),
       paddingBottom: theme.spacing(5),
       paddingLeft: theme.spacing(9),
       paddingRİght: theme.spacing(9),
     },
     button: {
       textTransform: 'capitalize',
-      backgroundColor: '#FFFFFF',
   },
   button_right: {
-    textTransform: 'capitalize',
-    backgroundColor: '#FFFFFF',
-    marginLeft: theme.spacing(52)
+    color: '#000000',
+    textDecoration: 'none'
 },
   fields: {
-
+    backgroundColor: "#FFFFFF",
+    borderColor: "#D2D2D2",
+            boxShadow: '0 5px 10px 0 rgba(0,0,0,.05)',
+            color: '#000000',
+            borderRadius: 10
   }
   }));
 
@@ -62,7 +63,7 @@ const Login = ({}) => {
             color: '#000000'
           },
           "&:hover ": {
-            borderColor: "#D2D2D2",
+            borderColor: "rgba(0,40,100,.12)",
             boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
             color: '#000000'
           },
@@ -131,67 +132,84 @@ return (
     <Topbar />
     <div className={classes.toolbar} />
     <div className={classes.content}>
-    
+    <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item>
     <Grid
         container
         direction="column"
         justify="flex-start"
         alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: 650 }}
-        spacing={3}
+        style={{ flexWrap: "nowrap", width: 400 }}
+        spacing={2}
         className={classes.fields}
       >
+        <Grid item xs={12} style={{ backgroundColor: "#3F51B5", borderRadius: 10, width: "100%", borderColor: "#D2D2D2",
+            boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
+            color: '#000000'}}>
+        <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={2}
+      >
         <Grid item>
-        <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
+        <VpnKeyIcon style={{color: "#FFFFFF", marginTop: 5}}/>
+        </Grid>
+        <Grid item>
+        
+        <Typography style={{ fontWeight: 600, color: '#ffffff',
+      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
+        
               Sign In
             </Typography>
+            </Grid>
+            </Grid>
         </Grid>
-        <Grid item></Grid>
-        <Grid item>
-        <FormLabel component="legend">
-              Email Address
-            </FormLabel>
-        </Grid>
+        <Grid item></Grid><Grid item></Grid>
         <Grid item xs={12}>
         <MuiThemeProvider theme={themeTextField}>
-          <div style={{backgroundColor: '#FFFFFF', width: 600}}>
+          <div style={{backgroundColor: '#FFFFFF', width: 380}}>
         <TextField
             id="username"
             variant="outlined"
             helperText={""}
+            label="Email Address"
             value={loginValues.username}
             onChange={(e, id) => handleLoginChange(e, 'username')}
             fullWidth
-            size="small"
-            InputLabelProps={{
-              shrink: true,
-            }}
+           
           />
           </div>
           </MuiThemeProvider>
         </Grid>
-        
-        <Grid item>
-        <FormLabel component="legend">
-              Password
-            </FormLabel>
-        </Grid>
+        <Grid item></Grid>
+
         <Grid item xs={12}>
         <MuiThemeProvider theme={themeTextField}>
-        <div style={{backgroundColor: '#FFFFFF', width: 600}}>
+        <div style={{backgroundColor: '#FFFFFF', width: 380}}>
         <TextField
             id="password"
             variant="outlined"
-            size="small"
             type="password"
+            label="Password"
             helperText={""}
             value={loginValues.password}
             onChange={(e, id) => handleLoginChange(e, 'password')}
             fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
+
           />
           </div>
           </MuiThemeProvider>
@@ -206,19 +224,33 @@ return (
         style={{ flexWrap: "nowrap", width: '%100' }}
         spacing={3}
       >
-        <Grid item>
-        <Button disabled={!isLoginValid} onClick={handle_login} className={classes.button} variant="outlined" color="primary">
+        <Grid item xs={12} style={{width: "100%"}}>
+        <Button fullWidth={true} disabled={!isLoginValid} onClick={handle_login} className={classes.button} variant="outlined" color="primary">
         Sign In
       </Button>
         </Grid>
         <Grid item>
-        <Button className={classes.button_right} variant="outlined" color="primary" component={Link} to={"/app/signup"}>
-        Sign Up
-      </Button>
+        
         </Grid>
+        
+      </Grid>
+      
+        </Grid>
+        
+        </Grid>
+        <Grid item style={{ marginTop: 50, marginLeft: 60}}>
+        <Typography variant="subtitle2" className={classes.button_right} component={Link} to={"/app/signup"}>
+        Don't have an account? Sign up from here
+      </Typography>
       </Grid>
         </Grid>
+        
         </Grid>
+        
+        </Grid>
+        
+        </Grid>
+        
       </div>
       </div>
 );

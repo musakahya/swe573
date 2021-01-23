@@ -33,6 +33,10 @@ function App() {
           setLoading(false);
         });
     }
+    else {
+      setUser({ username: '', email: '' });
+      setLoading(false);
+    }
   }, [])
 
   return (
