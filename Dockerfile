@@ -12,17 +12,23 @@ WORKDIR /app/backend
 COPY ./backend/requirements.txt /app/backend/
 RUN pip3 install --upgrade pip -r requirements.txt
 
+WORKDIR /app/backend
+
+# Install Python dependencies
+COPY ./backend/requirements.txt /app/backend/
+RUN pip3 install --upgrade pip -r requirements.txt
+
 # Install JS dependencies
 WORKDIR /app/frontend
 
-COPY ./frontend/package.json ./frontend/package-json.lock /app/frontend/
-RUN $HOME/.npm/bin/npm install
+COPY ./frontend/package.json ./frontend/yarn.lock /app/frontend/
+RUN $HOME/.yarn/bin/yarn install
 
 # Add the rest of the code
 COPY . /app/
 
 # Build static files
-RUN $HOME/.npm/bin/npm run build
+RUN $HOME/.yarn/bin/yarn build
 
 # Have to move all static files other than index.html to root/
 # for whitenoise middleware
