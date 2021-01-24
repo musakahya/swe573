@@ -5,7 +5,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS = [os.environ.get("PRODUCTION_HOST"), 
 "tranquil-cliffs-31744.herokuapp.com",
-"https://tranquil-cliffs-31744.herokuapp.com"
+"https://tranquil-cliffs-31744.herokuapp.com",
+"https://hidden-shore-28711.herokuapp.com/ ",
+"hidden-shore-28711.herokuapp.com/ ",
 ]
 
 INSTALLED_APPS.extend(["whitenoise.runserver_nostatic"])
