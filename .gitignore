@@ -13,6 +13,7 @@ docker-compose.yml
 ~
 docker-compose.yml
 frontend/.eslintcache
+backend/api/settings/__pycache__/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
