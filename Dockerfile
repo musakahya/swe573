@@ -1,10 +1,9 @@
 FROM python:3.6
 
-# Install curl, node, & yarn
+# Install curl, node, & npm
 RUN apt-get -y install curl \
   && curl -sL https://deb.nodesource.com/setup_12.x | bash \
-  && apt-get install nodejs \
-  && curl -o- -L https://yarnpkg.com/install.sh | bash
+  && apt-get install nodejs
 
 WORKDIR /app/backend
 
@@ -21,14 +20,14 @@ RUN pip3 install --upgrade pip -r requirements.txt
 # Install JS dependencies
 WORKDIR /app/frontend
 
-COPY ./frontend/package.json ./frontend/yarn.lock /app/frontend/
-RUN $HOME/.yarn/bin/yarn install
+COPY ./frontend/package.json ./frontend/package-lock.json /app/frontend/
+RUN npm install
 
 # Add the rest of the code
 COPY . /app/
 
 # Build static files
-RUN $HOME/.yarn/bin/yarn build
+RUN npm run build
 
 # Have to move all static files other than index.html to root/
 # for whitenoise middleware
