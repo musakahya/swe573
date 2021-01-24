@@ -103,7 +103,7 @@ const Signup = ({}) => {
 
   const handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://localhost:8000/social_pill/users/', {
+    fetch('/social_pill/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

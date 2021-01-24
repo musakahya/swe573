@@ -105,7 +105,7 @@ const Login = ({}) => {
 
   const handle_login = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8000/token-auth/', {
+    fetch('/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
