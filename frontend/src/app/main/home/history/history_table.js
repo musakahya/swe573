@@ -52,7 +52,7 @@ const HistoryTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props && props.rows ? 
+            {props && props.rows && props.length > 0 ? 
             (props.rows.map((row, index) => (
               <TableRow
                 hover

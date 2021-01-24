@@ -105,21 +105,6 @@ const Search = ({ historyData }) => {
     })
   }
 
-  function handleInput(e) {
-    setSelected(e);
-    axios.post('/api/history/', {
-      email_address: 'musa@kahya.com',
-      search_term: e,
-      date: new Date(),
-    })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }
-
   function handlePopup(e) {
     setInput(e.target.value)
   }
@@ -136,6 +121,7 @@ const Search = ({ historyData }) => {
       setTweetCount(res.data);
     })
     .catch((err) => {
+      setTweetCount(0);
       console.log(err);
     })
   }, []);

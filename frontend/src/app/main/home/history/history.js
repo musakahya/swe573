@@ -84,6 +84,7 @@ const History = ({ rows, setRows}) => {
     })
     .catch((err) => {
       console.log(err);
+      setRows([]);
       setLoading('empty');
     })
   }, []);
