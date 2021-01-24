@@ -72,7 +72,6 @@ const Cooccurrence = ({ tweets, words }) => {
         for(let l = 0; l < bigram_data.length; l++){
           bigram_data_dict.push({source: bigram_data[l][0][0], target: bigram_data[l][0][1]})
         }
-        console.log(bigram_data_dict);
         let bigram_nodes = [];
         let bigram_nodes_dict = [];
         for(let i = 0; i < bigram_data.length; i++){
@@ -85,7 +84,6 @@ const Cooccurrence = ({ tweets, words }) => {
             } 
           }
         }
-        console.log(bigram_nodes_dict);
         setNodesBigram(bigram_nodes_dict);
         setBigram(bigram_data_dict);
       })
@@ -93,11 +91,6 @@ const Cooccurrence = ({ tweets, words }) => {
           console.log(err);
       })
   }, [tweets])
-
-  useEffect(() => {
-    console.log(bigram);
-    console.log(nodesBigram);
-  }, [bigram, nodesBigram])
 
   const data = {
     nodes: nodesBigram,
