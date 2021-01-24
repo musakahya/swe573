@@ -98,7 +98,6 @@ const Search = ({ historyData }) => {
       date: new Date(),
     })
     .then((res) => {
-      console.log(res)
     })
     .catch((err) => {
       console.log(err)

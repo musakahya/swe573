@@ -50,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
   export default function SentimentTable(props) {
 
-    console.log(props);
-
     let rows = [];
 
     const [page, setPage] = React.useState(0);
