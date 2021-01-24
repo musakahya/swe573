@@ -103,9 +103,6 @@ DATABASES = {
     }
 }
 
-
-# DATABASES['default'] = dj_database_url.config(default='postgres://postgres:yV5pqpDRvDN6rDn@swe.cc1obugfex3a.us-east-2.rds.amazonaws.com:5432/swe?sslca=rds-ca-2019-root.pem&sslmode=require&encrypt=true')
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
