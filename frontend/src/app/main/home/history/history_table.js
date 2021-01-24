@@ -52,7 +52,8 @@ const HistoryTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.rows.map((row, index) => (
+            {props && props.rows ? 
+            (props.rows.map((row, index) => (
               <TableRow
                 hover
                 key={row.id}
@@ -69,7 +70,7 @@ const HistoryTable = (props) => {
       </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            ))) : null}
           </TableBody>
         </Table>
       </TableContainer>
