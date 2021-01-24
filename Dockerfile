@@ -3,7 +3,8 @@ FROM python:3.6
 # Install curl, node, & npm
 RUN apt-get -y install curl \
   && curl -sL https://deb.nodesource.com/setup_12.x | bash \
-  && apt-get install nodejs
+  && apt-get install nodejs \
+  && curl -o- -L https://yarnpkg.com/install.sh | bash
 
 WORKDIR /app/backend
 
@@ -20,7 +21,7 @@ RUN pip3 install --upgrade pip -r requirements.txt
 # Install JS dependencies
 WORKDIR /app/frontend
 
-COPY ./frontend/package.json ./frontend/package-lock.json /app/frontend/
+COPY ./frontend/package.json ./frontend/yarn.lock /app/frontend/
 RUN npm install
 
 # Add the rest of the code
@@ -33,7 +34,7 @@ RUN npm run build
 # for whitenoise middleware
 WORKDIR /app/frontend/build
 
-RUN mkdir root && mv *.ico *.js *.json root
+RUN mkdir root && mv !(index.html) root
 
 # Collect static files
 RUN mkdir /app/backend/staticfiles
