@@ -239,9 +239,14 @@ def history(request):
     except Exception:
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
   elif request.method == 'GET':
-    history = History.objects.filter(email_address=request.user).order_by('-date')
-    serializer = HistorySerializer(history, many=True)
-    return Response(serializer.data)
+    try:
+      history = History.objects.filter(email_address=request.user).order_by('-date')
+      serializer = HistorySerializer(history, many=True)
+      return Response(serializer.data)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(('POST', 'GET'))
 @csrf_exempt
