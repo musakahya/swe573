@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     if(localStorage.getItem('token')){
-      fetch('http://localhost:8000/social_pill/current_user', {
+      fetch('/social_pill/current_user', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
