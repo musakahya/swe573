@@ -69,7 +69,7 @@ const History = ({ rows, setRows}) => {
 
   useEffect(() => {
 
-    axios.get('/api/history',
+    axios.get('/api/history/',
     {
     headers: {
       Authorization: `JWT ${localStorage.getItem('token')}`
