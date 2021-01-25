@@ -17,9 +17,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Styling begins
@@ -139,10 +137,29 @@ const Search = ({ historyData }) => {
         <Grid item xs={12}>
 
         <Grid item xs={12} className={classes.header}>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={3}
+      >
+        <Grid item >
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
               New Search
             </Typography>
+            </Grid>
+            {input.length > 0 ?
+            <Grid item >
+            <Chip
+        label="hit enter to search"
+        color="primary"
+      />
+            </Grid>
+            : null
+            }
+            </Grid>
         </Grid>
         
         <Grid item xs={12}>

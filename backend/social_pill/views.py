@@ -121,106 +121,119 @@ def queryTwitter(q, maxId):
 
 def search(request):
 
-  # who is searching
-  user=request.GET.get('q', None).split('/?u=')[1]
+  try:
 
-  # what is being searched
-  search_term=request.GET.get('q', None).split('/?u=')[0]
-  
-  dbTweets = retrieveTweetsFromDatabase(request.GET.get('q', None).split('/?u=')[0])
-  
-  ## data dictionary is the container for tweets coming from the database and the Twitter API for the given search term
-  data = []
-  global_data = []
+    # who is searching
+    user=request.GET.get('q', None).split('/?u=')[1]
 
-  ## Add tweets coming from the database into data dictionary
-  for tweet in dbTweets[0]:
-    data.append(json.loads(tweet["tweet_json"]))
+    # what is being searched
+    search_term=request.GET.get('q', None).split('/?u=')[0]
+    
+    dbTweets = retrieveTweetsFromDatabase(request.GET.get('q', None).split('/?u=')[0])
+    
+    ## data dictionary is the container for tweets coming from the database and the Twitter API for the given search term
+    data = []
+    global_data = []
 
-  ## Query Twitter API for the given search term
-  res = queryTwitter(request.GET.get('q', None).split('/?u=')[0], dbTweets[1])
+    ## Add tweets coming from the database into data dictionary
+    for tweet in dbTweets[0]:
+      data.append(json.loads(tweet["tweet_json"]))
 
-  ## Add tweets coming from Twitter into the new_tweets dictionary
-  new_tweets = []
-  for tweet in res:
-    new_tweets.append(tweet._json)
+    ## Query Twitter API for the given search term
+    res = queryTwitter(request.GET.get('q', None).split('/?u=')[0], dbTweets[1])
 
-  ## Merge new_tweets with the data dictionary
-  for item in new_tweets:
-    data.append(item)
+    ## Add tweets coming from Twitter into the new_tweets dictionary
+    new_tweets = []
+    for tweet in res:
+      new_tweets.append(tweet._json)
 
-  ## Save new tweets into the database
-  saveNewTweetsIntoDatabase(new_tweets, user, search_term)
+    ## Merge new_tweets with the data dictionary
+    for item in new_tweets:
+      data.append(item)
 
-  ## Get text attribute from the Tweet object
-  raw_tweets = getTextFromTweet(data)
+    ## Save new tweets into the database
+    saveNewTweetsIntoDatabase(new_tweets, user, search_term)
 
-  ## Clean tweets
-  clean_tweets = cleanTweets(raw_tweets)
+    ## Get text attribute from the Tweet object
+    raw_tweets = getTextFromTweet(data)
 
-  ## Find words
-  words = findWords(clean_tweets)
+    ## Clean tweets
+    clean_tweets = cleanTweets(raw_tweets)
 
-  ## Save new search into the history table
-  saveHistory(request)
+    ## Find words
+    words = findWords(clean_tweets)
 
-  data = sorted(data, key=lambda k: k['id'], reverse=True) 
+    ## Save new search into the history table
+    saveHistory(request)
 
-  global_data = data
+    data = sorted(data, key=lambda k: k['id'], reverse=True) 
 
-  return JsonResponse({'response':data[:1000], 'words': words})
+    global_data = data
+
+    return JsonResponse({'response':data[:2500], 'words': words})
+
+  except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @csrf_exempt
 def cooccurrence(request):
-  
-  ## Get text attribute from the Tweet object
-  raw_tweets = json.loads(request.body.decode('utf-8'))["tweets"]
+  try:
+    ## Get text attribute from the Tweet object
+    raw_tweets = json.loads(request.body.decode('utf-8'))["tweets"]
 
-  # Remove URLs
-  tweets_no_urls = [remove_url(tweet) for tweet in raw_tweets]
+    # Remove URLs
+    tweets_no_urls = [remove_url(tweet) for tweet in raw_tweets]
 
-  # Create a sublist of lower case words for each tweet
-  words_in_tweet = [tweet.lower().split() for tweet in tweets_no_urls]
+    # Create a sublist of lower case words for each tweet
+    words_in_tweet = [tweet.lower().split() for tweet in tweets_no_urls]
 
-  # Download stopwords
-  nltk.download('stopwords')
-  stop_words = set(stopwords.words('english'))
+    # Download stopwords
+    nltk.download('stopwords')
+    stop_words = set(stopwords.words('english'))
 
-  # Remove stop words from each tweet list of words
-  tweets_nsw = [[word for word in tweet_words if not word in stop_words]
-              for tweet_words in words_in_tweet]
+    # Remove stop words from each tweet list of words
+    tweets_nsw = [[word for word in tweet_words if not word in stop_words]
+                for tweet_words in words_in_tweet]
 
-  # Remove mentions and short words with one or two letters from each tweet list of words
-  tweets_nsw = [[word for word in tweet_words if not word.startswith('@') and len(word) > 2]
-              for tweet_words in words_in_tweet]
+    # Remove mentions and short words with one or two letters from each tweet list of words
+    tweets_nsw = [[word for word in tweet_words if not word.startswith('@') and len(word) > 2]
+                for tweet_words in words_in_tweet]
 
-  # Create list of lists containing bigrams in tweets
-  terms_bigram = [list(bigrams(tweet)) for tweet in tweets_nsw]
+    # Create list of lists containing bigrams in tweets
+    terms_bigram = [list(bigrams(tweet)) for tweet in tweets_nsw]
 
-  # Flatten list of bigrams in clean tweets
-  bigrams2 = list(itertools.chain(*terms_bigram))
+    # Flatten list of bigrams in clean tweets
+    bigrams2 = list(itertools.chain(*terms_bigram))
 
-  # Create counter of words in clean bigrams
-  bigram_counts = collections.Counter(bigrams2)
+    # Create counter of words in clean bigrams
+    bigram_counts = collections.Counter(bigrams2)
 
-  return JsonResponse({'bigram': bigram_counts.most_common(50)})
+    return JsonResponse({'bigram': bigram_counts.most_common(50)})
+
+  except:
+    return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @csrf_exempt
 def sentiment(request):
-  neg = []
-  pos= []  
-  neut = []
-  for tweet in json.loads(request.body.decode('utf-8'))["tweets"]:
-    blob = TextBlob(tweet)
-    if blob.sentiment.polarity < 0:         #Negative
-      neg.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
-    elif blob.sentiment.polarity == 0:      #Neutral
-      neut.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
-    else:                                   #Positive
-      pos.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
+  try:
+    neg = []
+    pos= []  
+    neut = []
+    for tweet in json.loads(request.body.decode('utf-8'))["tweets"]:
+      blob = TextBlob(tweet)
+      if blob.sentiment.polarity < 0:         #Negative
+        neg.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
+      elif blob.sentiment.polarity == 0:      #Neutral
+        neut.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
+      else:                                   #Positive
+        pos.append({"tweet": tweet, "polarity": round(blob.sentiment.polarity, 2)})
 
-  return JsonResponse({'neg': neg, 'pos': pos, 'neut': neut})
+    return JsonResponse({'neg': neg, 'pos': pos, 'neut': neut})
+
+  except:
+    return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(('POST', 'GET'))
 @csrf_exempt
@@ -252,24 +265,25 @@ def history(request):
 @api_view(('POST', 'GET'))
 @csrf_exempt
 def tweet(request):
-  print("herads")
   if request.method == 'GET':
-    tweets = Tweet.objects.filter(user=request.user).count()
-    return Response(tweets)
-
-
+    try:
+      tweets = Tweet.objects.filter(user=request.user).count()
+      return Response(tweets)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 @api_view(['POST', 'GET'])
 @csrf_exempt
 def current_user(request):
     """
     Determine the current user by their token, and return their data
     """
-    print("hereee")
-    serializer = UserSerializer(request.user)
-    print(request.user)
-    print(serializer.data)
-    return Response(serializer.data)
-
+    try:
+      serializer = UserSerializer(request.user)
+      return Response(serializer.data)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 class UserList(APIView):
     """
@@ -280,6 +294,8 @@ class UserList(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
+      
+      try:
         
         serializer = UserSerializerWithToken(data=request.data)
 
@@ -287,3 +303,6 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+      except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
