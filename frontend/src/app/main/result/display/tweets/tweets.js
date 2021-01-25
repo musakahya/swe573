@@ -65,7 +65,7 @@ const Tweets = ({ tweets }) => {
 </Grid>
 <Grid item  xs={12}>
   <div className={classes.info}>
-  <div><strong>{tweets ? tweets.length : 0} </strong> tweets are displayed from newest to oldest.</div>
+  <div><strong>{tweets ? tweets.length : 0} </strong> tweets are displayed from newest to oldest. Maximum number of tweets that can be returned at a time is 2500 for the performance purposes.</div>
   </div>
 </Grid>
 <Grid item  className={classes.table}>
