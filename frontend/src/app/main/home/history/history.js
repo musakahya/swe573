@@ -76,6 +76,7 @@ const History = ({ rows, setRows}) => {
     }}
     )
     .then((res) => {
+      console.log(res);
       rowdata = res.data;
       if (rowdata.length > 0) {
         setLoading('completed');
