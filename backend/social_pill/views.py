@@ -251,6 +251,7 @@ def history(request):
 @api_view(('POST', 'GET'))
 @csrf_exempt
 def tweet(request):
+  print("herads")
   if request.method == 'GET':
     tweets = Tweet.objects.filter(user=request.user).count()
     return Response(tweets)

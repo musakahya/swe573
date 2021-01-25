@@ -110,7 +110,7 @@ const Search = ({ historyData }) => {
 
   useEffect(() => {
 
-    axios.get('/api/tweet',
+    axios.get('/api/tweet/',
     {
     headers: {
       Authorization: `JWT ${localStorage.getItem('token')}`
