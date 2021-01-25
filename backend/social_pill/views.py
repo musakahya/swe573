@@ -42,18 +42,19 @@ def retrieveTweetsFromDatabase(keyword):
 def saveNewTweetsIntoDatabase(data, user, search_term):
   tweetObjects = []
   for tweets in data:
-    tweetObjects.append(
-      Tweet(
-        user=user,
-        search_term=search_term,
-        date=datetime.now(),
-        tweet_text=tweets['text'],
-        tweet_entities=tweets['entities'],
-        tweet_id=tweets["id"],
-        tweet_date=tweets["created_at"],
-        tweet_json=json.dumps(tweets)
+    if(Tweet.objects.filter(tweet_id=tweets["id"]).count() == 0):
+      tweetObjects.append(
+        Tweet(
+          user=user,
+          search_term=search_term,
+          date=datetime.now(),
+          tweet_text=tweets['text'],
+          tweet_entities=tweets['entities'],
+          tweet_id=tweets["id"],
+          tweet_date=tweets["created_at"],
+          tweet_json=json.dumps(tweets)
+        )
       )
-    )
   Tweet.objects.bulk_create(tweetObjects)
 
 def getTextFromTweet(data):

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HistoryTable = (props) => {
+
+  useEffect(() => {
+    console.log(props)
+  }, [props])
+
   const classes = useStyles();
   return (
     <div>
