@@ -168,7 +168,7 @@ def search(request):
 
   global_data = data
 
-  return JsonResponse({'response':data[:1000], 'words': words})
+  return JsonResponse({'response':data[:2500], 'words': words})
 
 @csrf_exempt
 def cooccurrence(request):
