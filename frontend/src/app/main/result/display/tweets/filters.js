@@ -126,7 +126,7 @@ const TweetsFilters = ({ setTimeRange, type, setType }) => {
         spacing={3}
         className={classes.header}
       >
-          {/* 
+          {
           <Grid item xs={12} className={classes.header}>
 <Grid
         container
@@ -163,28 +163,7 @@ const TweetsFilters = ({ setTimeRange, type, setType }) => {
       </Grid>
           </Grid>
           </Grid>
-          */}
-          <Grid item xs={12} className={classes.header}>
-          <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap" }}
-        spacing={3}
-      >
-          <Grid item>
-          <Button size="small" className={type === 'recent' ? classes.selected : classes.button} onClick={() => {handleType('recent')}} variant="outlined" color="primary">
-          Recent
-      </Button>
-          </Grid>
-          <Grid item>
-          <Button size="small" className={type === 'popular' ? classes.selected : classes.button} onClick={() => {handleType('popular')}} variant="outlined" color="primary">
-        Popular
-      </Button>
-          </Grid>
-      </Grid>
-          </Grid>
+          }
           </Grid>
     </div>
   );

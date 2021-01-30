@@ -2,6 +2,7 @@ from social_pill.models import Tweet, History
 from social_pill.serializers import TweetSerializer
 from django.db.models import Max
 from datetime import date, datetime
+from django.db import connection
 import json
 
 def retrieveTweetsFromDatabase(keyword):
@@ -34,3 +35,9 @@ def saveHistory(request):
             search_term=request.GET.get('q', None).split('/?u=')[0],
             date=date.today(),
   )
+
+def queryDatabaseByDate(searchTerm, startDate):
+  cursor = connection.cursor()
+  cursor.execute("SELECT tweet_json FROM social_pill_tweet WHERE tweet_date > %s LIMIT 2", [startDate])
+  rows = cursor.fetchall()
+  return rows
