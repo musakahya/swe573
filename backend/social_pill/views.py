@@ -5,8 +5,8 @@ from wordcloud import WordCloud, STOPWORDS
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from datetime import date, datetime
 from textblob import TextBlob
+from rest_framework import permissions
 
 ## Models and serializers
 from .models import History, Tweet
@@ -27,7 +27,7 @@ from nltk import bigrams
 from nltk.corpus import stopwords
 
 ## Database functions
-from social_pill.functions.database.database import retrieveTweetsFromDatabase, saveNewTweetsIntoDatabase
+from social_pill.functions.database.database import retrieveTweetsFromDatabase, saveNewTweetsIntoDatabase, saveHistory
 
 ## Helper functions
 from social_pill.functions.helper.helper import getTextFromTweet, findWords
@@ -81,10 +81,10 @@ def search(request):
     rawTweets = getTextFromTweet(data)
 
     ## Clean tweets
-    cleanTweets = cleanTweets(rawTweets)
+    cleanTweetsList = cleanTweets(rawTweets)
 
     ## Find words
-    words = findWords(cleanTweets)
+    words = findWords(cleanTweetsList)
 
     ## Save new search into the history table
     saveHistory(request)
@@ -95,7 +95,8 @@ def search(request):
 
     return JsonResponse({'response':data[:2500], 'words': words})
 
-  except Exception:
+  except Exception as e:
+        print(str(e))
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @csrf_exempt
@@ -209,6 +210,9 @@ def current_user(request):
     
 
 class UserList(APIView):
+
+    permission_classes = (permissions.AllowAny,)
+    http_method_names = ['get', 'head', 'post']
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
     method here too, for retrieving a list of all User objects.

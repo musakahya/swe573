@@ -1,5 +1,6 @@
 
 import tweepy
+import os
 
 def queryTwitter(q, maxId):
   auth = tweepy.AppAuthHandler(os.getenv('TW_SECRET_ID'), os.getenv('TW_SECRET_KEY'))
