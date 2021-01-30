@@ -1,5 +1,5 @@
-Django==3.1.4
-psycopg2==2.8.6
+Django
+psycopg2
 djangorestframework==3.12.2
 tweepy==3.9.0
 djangorestframework-jwt==1.11.0

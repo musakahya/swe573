@@ -21,11 +21,11 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
     def get_token(self, obj):
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        jwtPayloadHandler = api_settings.JWT_PAYLOAD_HANDLER
+        jwtEncodeHandler = api_settings.JWT_ENCODE_HANDLER
 
-        payload = jwt_payload_handler(obj)
-        token = jwt_encode_handler(payload)
+        payload = jwtPayloadHandler(obj)
+        token = jwtEncodeHandler(payload)
         return token
 
     def create(self, validated_data):
