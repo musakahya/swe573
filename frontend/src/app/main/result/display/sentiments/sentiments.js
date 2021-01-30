@@ -75,7 +75,8 @@ marginBottom: 21
         headers: {}, 
         data: {
           tweets: tweets.map((tweet) => tweet.text), // This is the body part
-        }
+        },
+        withCredentials: true
       })
         .then((res) => {
             setNeg(res.data.neg);

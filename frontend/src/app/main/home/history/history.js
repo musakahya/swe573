@@ -73,7 +73,8 @@ const History = ({ rows, setRows}) => {
     {
     headers: {
       Authorization: `JWT ${localStorage.getItem('token')}`
-    }}
+    },
+    withCredentials: true}
     )
     .then((res) => {
       console.log(res);
