@@ -117,7 +117,8 @@ const Search = ({ historyData }) => {
     withCredentials: true}
     )
     .then((res) => {
-      setTweetCount(res.data);
+      if(res.data && res.data > 0) setTweetCount(res.data);
+      else setTweetCount(0);
     })
     .catch((err) => {
       setTweetCount(0);
@@ -235,7 +236,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {historyData.length ? historyData.length : <CircularProgress />}
+              {historyData.length >= 0 ? historyData.length : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>
@@ -257,7 +258,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {tweetCount ? tweetCount : <CircularProgress />}
+              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>

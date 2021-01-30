@@ -101,7 +101,7 @@ const Signup = ({}) => {
   };
 
   useEffect(() => {
-    setLoginValid(loginValues.username !== '' && loginValues.password !== '' && validator.isEmail(loginValues.username) && loginValues.password.length > 8);
+    setLoginValid(loginValues.username !== '' && loginValues.password !== '' && validator.isEmail(loginValues.username) && loginValues.password.length > 7);
   }, [loginValues]);
 
   const handle_signup = (e, data) => {

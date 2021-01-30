@@ -18,7 +18,6 @@ class TweetSerializer(serializers.ModelSerializer):
 class UserSerializerWithToken(serializers.ModelSerializer):
 
     try:
-        print("asdqweflaçsdlk")
         token = serializers.SerializerMethodField()
         password = serializers.CharField(write_only=True)
 
