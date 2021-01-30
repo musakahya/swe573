@@ -64,7 +64,8 @@ const Cooccurrence = ({ tweets, words }) => {
       headers: {}, 
       data: {
         tweets: tweets.map((tweet) => tweet.text),
-      }
+      },
+      withCredentials: true
     })
       .then((res) => {
         let bigram_data = res.data.bigram;

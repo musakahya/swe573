@@ -34,7 +34,7 @@ const Display = ({ setLoading }) => {
   const [words, setWords] = useState();
 
   useEffect(() => {
-    axios.get(`/api/search/${location.search}/?u=${user.username}`
+    axios.get(`/api/search/${location.search}/?u=${user.username}`, { withCredentials: true }
 )
     .then((res) => {
         setTweets(res.data.response);

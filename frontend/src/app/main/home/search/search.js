@@ -94,7 +94,8 @@ const Search = ({ historyData }) => {
       email_address: 'musa@kahya.com',
       search_term: e.target.value,
       date: new Date(),
-    })
+    },
+    {withCredentials: true})
     .then((res) => {
     })
     .catch((err) => {
@@ -112,7 +113,8 @@ const Search = ({ historyData }) => {
     {
     headers: {
       Authorization: `JWT ${localStorage.getItem('token')}`
-    }}
+    },
+    withCredentials: true}
     )
     .then((res) => {
       setTweetCount(res.data);
