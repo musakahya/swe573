@@ -1,5 +1,8 @@
 from social_pill.models import Tweet, History
 from social_pill.serializers import TweetSerializer
+from django.db.models import Max
+from datetime import date, datetime
+import json
 
 def retrieveTweetsFromDatabase(keyword):
   response = Tweet.objects.filter(search_term=keyword)

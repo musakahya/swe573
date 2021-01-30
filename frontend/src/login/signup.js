@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
 import { Link } from 'react-router-dom';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import axios from 'axios';
 
 const Signup = ({}) => {
 
@@ -103,8 +104,7 @@ const Signup = ({}) => {
 
   const handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('/social_pill/users/', {
-      method: 'POST',
+    axios.post('/social_pill/users/', {
       headers: {
         'Content-Type': 'application/json'
       },

@@ -1,5 +1,4 @@
-from nltk.corpus import stopwords
-# from wordcloud import STOPWORDS
+from wordcloud import STOPWORDS
 from collections import Counter
 
 def getTextFromTweet(data):

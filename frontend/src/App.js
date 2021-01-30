@@ -8,7 +8,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-
+import jwt from 'jwt-decode' 
 import userContext from 'shared_resources/context/user_context';
 import AutoLogout from 'shared_resources/components/auto_logout/auto_logout';
 
@@ -21,7 +21,16 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if(localStorage.getItem('token')){
+    let token = localStorage.getItem('token');
+    let decodedToken = jwt(token);
+  let currentDate = new Date();
+
+  // JWT exp is in seconds
+  if (decodedToken.exp * 1000 < currentDate.getTime()) {
+    setUser({ username: '', email: '' });
+    setLoading(false);
+  } else {
+    if(localStorage.getItem('token') ){
       fetch('/social_pill/current_user', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
@@ -37,6 +46,7 @@ function App() {
       setUser({ username: '', email: '' });
       setLoading(false);
     }
+  }
   }, [])
 
   return (
