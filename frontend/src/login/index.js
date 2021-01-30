@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useContext } from 'react';
+import React, { Component, useEffect, useContext, useState } from 'react';
 import Grid from "@material-ui/core/Grid";
 import {
   makeStyles,
@@ -80,6 +80,7 @@ const Login = ({}) => {
   const [loginFormData, setLoginFormData] = React.useState();
   const [isLoginValid, setLoginValid] = React.useState(false);
   const { user, setUser } = useContext(UserContext);
+  const [ isError, setError ] = React.useState(false);
   let form;
 
   // login form
@@ -112,7 +113,7 @@ const Login = ({}) => {
       },
       body: JSON.stringify({username: loginValues.username, password: loginValues.password})
     })
-      .then(res => res.json())
+    .then(res => res.json())
       .then(json => {
         localStorage.setItem('token', json.token);
         localStorage.setItem('user', json.user.username);
@@ -123,6 +124,10 @@ const Login = ({}) => {
           username: json.user.username,
           email: json.user.email_address,
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(true);
       });
   };
 
@@ -178,7 +183,17 @@ return (
             </Grid>
             </Grid>
         </Grid>
-        <Grid item></Grid><Grid item></Grid>
+        <Grid item></Grid>
+        {isError ? (
+        <Grid item>
+          <Typography style={{color: 'red',
+      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="body2">
+        
+              Email address or password is invalid. Please try again.
+            </Typography>
+        </Grid>
+        ) : null}
+        <Grid item></Grid>
         <Grid item xs={12}>
         <MuiThemeProvider theme={themeTextField}>
           <div style={{backgroundColor: '#FFFFFF', width: 380}}>
@@ -195,6 +210,8 @@ return (
           </div>
           </MuiThemeProvider>
         </Grid>
+        
+
         <Grid item></Grid>
 
         <Grid item xs={12}>
