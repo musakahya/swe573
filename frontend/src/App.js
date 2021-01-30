@@ -30,7 +30,9 @@ function App() {
   if (decodedToken.exp * 1000 < currentDate.getTime()) {
     setUser({ username: '', email: '' });
     setLoading(false);
+    console.log("here")
   } else {
+    console.log("here")
     if(localStorage.getItem('token') ){
       fetch('/social_pill/current_user', {
         headers: {

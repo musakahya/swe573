@@ -77,12 +77,14 @@ const History = ({ rows, setRows}) => {
     withCredentials: true}
     )
     .then((res) => {
-      console.log(res);
       rowdata = res.data;
       if (rowdata.length > 0) {
         setLoading('completed');
         setRows(rowdata);
-      } else setLoading('empty');
+      } else {
+        setLoading('empty');
+        setRows([]);
+      }
     })
     .catch((err) => {
       console.log(err);
