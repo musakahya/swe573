@@ -11,6 +11,7 @@ from rest_framework import permissions
 ## Models and serializers
 from .models import History, Tweet
 from .serializers import HistorySerializer, UserSerializer, UserSerializerWithToken, TweetSerializer
+from django.contrib.auth.models import User
 
 ## Rest framework
 from rest_framework import status
@@ -211,19 +212,30 @@ def current_user(request):
 
 class UserList(APIView):
 
+    print("here")
+
     permission_classes = (permissions.AllowAny,)
     http_method_names = ['get', 'head', 'post']
+
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
     method here too, for retrieving a list of all User objects.
     """
 
     def post(self, request, format=None):
-      
-      try:
-        
-        serializer = UserSerializerWithToken(data=request.data)
 
+      userData = request.data
+      userData = json.loads(userData["body"])
+      try:
+        user = User.objects.create_user(userData["username"], userData["username"], userData["password"])
+        user.save()
+        return Response(status=status.HTTP_201_CREATED)
+      except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+"""
+      try:
+        serializer = UserSerializerWithToken(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -231,3 +243,4 @@ class UserList(APIView):
 
       except Exception:
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        """

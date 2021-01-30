@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from 'react-router-dom';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import axios from 'axios';
+import validator from 'validator';
 
 const Signup = ({}) => {
 
@@ -79,6 +80,7 @@ const Signup = ({}) => {
   const [username, setUsername] = React.useState();
   const [loginFormData, setLoginFormData] = React.useState();
   const [isLoginValid, setLoginValid] = React.useState(false);
+  const [status, setStatus] = React.useState();
   let form;
 
   // login form
@@ -99,7 +101,7 @@ const Signup = ({}) => {
   };
 
   useEffect(() => {
-    setLoginValid(loginValues.username !== '' && loginValues.password !== '');
+    setLoginValid(loginValues.username !== '' && loginValues.password !== '' && validator.isEmail(loginValues.username) && loginValues.password.length > 8);
   }, [loginValues]);
 
   const handle_signup = (e, data) => {
@@ -111,13 +113,12 @@ const Signup = ({}) => {
       withCredentials: true,
       body: JSON.stringify({username: loginValues.username, email: loginValues.username, password: loginValues.password, is_superuser: false, is_staff: false})
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        setDisplayedForm('');
-        setLoggedIn(true);
-        setUsername(json.username);
-      });
+      .then(() => {
+        setStatus("success");
+      })
+      .catch(() => {
+        setStatus("failure");
+      })
   };
 
 return (
@@ -172,19 +173,40 @@ return (
           </Grid>
           </Grid>
       </Grid>
-      <Grid item></Grid><Grid item></Grid>
+      <Grid item></Grid>
+      {status === "success" ? 
+      <Grid item>
+          <Typography style={{color: 'green',
+      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="body2">
+        
+              You have successfully signed up. Please go back to the sign in page and use your credentials.
+            </Typography>
+        </Grid>
+        : (
+          status === "failure" ? 
+          <Grid item>
+          <Typography style={{color: 'red',
+      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="body2">
+        
+              Sign up failed.
+            </Typography>
+        </Grid>
+        : null
+        )
+        }
+      <Grid item></Grid>
       <Grid item xs={12}>
       <MuiThemeProvider theme={themeTextField}>
         <div style={{backgroundColor: '#FFFFFF', width: 380}}>
       <TextField
           id="username"
           variant="outlined"
-          helperText={""}
+          helperText={"Proper email shape and form required"}
           label="Email Address"
           value={loginValues.username}
           onChange={(e, id) => handleLoginChange(e, 'username')}
           fullWidth
-         
+          error={loginValues.username !== '' && !validator.isEmail(loginValues.username)}
         />
         </div>
         </MuiThemeProvider>
@@ -199,11 +221,11 @@ return (
           variant="outlined"
           type="password"
           label="Password"
-          helperText={""}
+          helperText={"At least 8-characters long"}
           value={loginValues.password}
           onChange={(e, id) => handleLoginChange(e, 'password')}
           fullWidth
-
+          error={loginValues.password !== '' && loginValues.password.length <= 8}
         />
         </div>
         </MuiThemeProvider>

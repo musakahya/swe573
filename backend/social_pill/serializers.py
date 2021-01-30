@@ -17,28 +17,34 @@ class TweetSerializer(serializers.ModelSerializer):
 
 class UserSerializerWithToken(serializers.ModelSerializer):
 
-    token = serializers.SerializerMethodField()
-    password = serializers.CharField(write_only=True)
+    try:
+        print("asdqweflaçsdlk")
+        token = serializers.SerializerMethodField()
+        password = serializers.CharField(write_only=True)
 
-    def get_token(self, obj):
-        jwtPayloadHandler = api_settings.JWT_PAYLOAD_HANDLER
-        jwtEncodeHandler = api_settings.JWT_ENCODE_HANDLER
+        def get_token(self, obj):
+            jwtPayloadHandler = api_settings.JWT_PAYLOAD_HANDLER
+            jwtEncodeHandler = api_settings.JWT_ENCODE_HANDLER
 
-        payload = jwtPayloadHandler(obj)
-        token = jwtEncodeHandler(payload)
-        return token
+            payload = jwtPayloadHandler(obj)
+            token = jwtEncodeHandler(payload)
+            return token
 
-    def create(self, validated_data):
-        password = validated_data.pop('password', None)
-        instance = self.Meta.model(**validated_data)
-        if password is not None:
-            instance.set_password(password)
-        instance.save()
-        return instance
+        def create(self, validated_data):
+            password = validated_data.pop('password', None)
+            instance = self.Meta.model(**validated_data)
+            if password is not None:
+                instance.set_password(password)
+            instance.save()
+            return instance
 
-    class Meta:
-        model = User
-        fields = ('token', 'username', 'password', 'email')
+        class Meta:
+            model = User
+            fields = ('token', 'username', 'password', 'email')
+
+    except Exception as e:
+        #return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        print(str(e))
         
 class HistorySerializer(serializers.ModelSerializer):
   class Meta:

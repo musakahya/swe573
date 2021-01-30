@@ -21,6 +21,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    try{
     let token = localStorage.getItem('token');
     let decodedToken = jwt(token);
   let currentDate = new Date();
@@ -46,6 +47,10 @@ function App() {
       setUser({ username: '', email: '' });
       setLoading(false);
     }
+  }}
+  catch(e){
+    setUser({ username: '', email: '' });
+      setLoading(false);
   }
   }, [])
 
