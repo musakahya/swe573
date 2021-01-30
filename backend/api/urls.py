@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework_jwt.views import obtain_jwt_token
-from social_pill.views import search, history, tweet, sentiment, cooccurrence, current_user, UserList
+from social_pill.views import search, history, tweet, sentiment, cooccurrence, currentUser, UserList, searchTweetsByDate
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
@@ -24,12 +24,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('token-auth/', obtain_jwt_token),
     path('api/search/', search, name="search"),
+    path('api/search_by_date/', searchTweetsByDate, name="searchTweetsByDate"),
     path('api/history/', csrf_exempt(history), name="history"),
     path('api/tweet/', csrf_exempt(tweet), name="tweet"),
     path('api/sentiment/', sentiment, name="sentiment"),
     path('api/cooccurrence/', cooccurrence, name="cooccurrence"),
     #path('social_pill/', include('social_pill.urls')),
-    path('social_pill/current_user', current_user, name="current_user"),
+    path('social_pill/current_user', currentUser, name="currentUser"),
     path('social_pill/users/', UserList.as_view()),
     re_path(".*", TemplateView.as_view(template_name="index.html")),
 ]

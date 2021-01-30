@@ -28,7 +28,7 @@ from nltk import bigrams
 from nltk.corpus import stopwords
 
 ## Database functions
-from social_pill.functions.database.database import retrieveTweetsFromDatabase, saveNewTweetsIntoDatabase, saveHistory
+from social_pill.functions.database.database import retrieveTweetsFromDatabase, saveNewTweetsIntoDatabase, saveHistory, queryDatabaseByDate
 
 ## Helper functions
 from social_pill.functions.helper.helper import getTextFromTweet, findWords
@@ -41,7 +41,6 @@ from social_pill.functions.twitter.twitter import queryTwitter
 
 
 globalData = []
-
 
 def search(request):
 
@@ -97,8 +96,35 @@ def search(request):
     return JsonResponse({'response':data[:2500], 'words': words})
 
   except Exception as e:
-        print(str(e))
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+def searchTweetsByDate(request):
+  
+  dbTweets = queryDatabaseByDate(request.GET.get('q', None).split('/?u=')[0], '2021-01-29')
+
+  print(dbTweets)
+
+  data = []
+
+  ## Add tweets coming from the database into data dictionary
+  for tweet in dbTweets:
+    data.append(json.loads(tweet))
+
+  ## Get text attribute from the Tweet object
+  rawTweets = getTextFromTweet(data)
+
+  ## Clean tweets
+  cleanTweetsList = cleanTweets(rawTweets)
+
+  ## Find words
+  words = findWords(cleanTweetsList)
+
+  data = sorted(data, key=lambda k: k['id'], reverse=True) 
+
+  globalData = data
+
+  return JsonResponse({'response':data[:2500], 'words': words})
+
 
 @csrf_exempt
 def cooccurrence(request):
@@ -199,10 +225,7 @@ def tweet(request):
     
 @api_view(['POST', 'GET'])
 @csrf_exempt
-def current_user(request):
-    """
-    Determine the current user by their token, and return their data
-    """
+def currentUser(request):
     try:
       serializer = UserSerializer(request.user)
       return Response(serializer.data)
@@ -211,8 +234,6 @@ def current_user(request):
     
 
 class UserList(APIView):
-
-    print("here")
 
     permission_classes = (permissions.AllowAny,)
     http_method_names = ['get', 'head', 'post']
@@ -232,15 +253,3 @@ class UserList(APIView):
         return Response(status=status.HTTP_201_CREATED)
       except Exception:
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-"""
-      try:
-        serializer = UserSerializerWithToken(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-      except Exception:
-        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        """
