@@ -248,7 +248,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {historyData.length >= 0 ? historyData.length : <CircularProgress />}
+              {historyData.length >= 0 && tweetCount >= 0 ? historyData.length : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>
