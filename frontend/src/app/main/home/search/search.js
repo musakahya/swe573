@@ -87,6 +87,8 @@ const Search = ({ historyData }) => {
   const [input, setInput] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
   const [tweetCount, setTweetCount] = useState();
+  const [totalTweetCount, setTotalTweetCount] = useState();
+  const [mostSearched, setMostSearched] = useState();
 
   function handleChange(e) {
     setSelected(e.target.value);
@@ -117,11 +119,21 @@ const Search = ({ historyData }) => {
     withCredentials: true}
     )
     .then((res) => {
-      if(res.data && res.data > 0) setTweetCount(res.data);
-      else setTweetCount(0);
+      if(res.data[0] && res.data[0] > 0){
+        setTotalTweetCount(res.data[1]);
+        setTweetCount(res.data[0]);
+        setMostSearched(res.data[2]);
+      } 
+      else {
+        setTotalTweetCount(0);
+        setTweetCount(0);
+        setMostSearched("not found");
+      }
     })
     .catch((err) => {
-      setTweetCount(0);
+      setTotalTweetCount(0);
+        setTweetCount(0);
+        setMostSearched("not found");
       console.log(err);
     })
   }, []);
@@ -212,7 +224,7 @@ const Search = ({ historyData }) => {
           >
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
-              Your Dashboard
+              Dashboard
             </Typography>
           </Grid>
         </Grid>
@@ -280,13 +292,13 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+              {totalTweetCount >= 0 ? totalTweetCount : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Tweets Returned for You
+              All Tweets We Have
             </Typography>
             </Grid>
             </Grid>
@@ -302,13 +314,13 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+              {mostSearched !== undefined ? mostSearched : <CircularProgress />}
             </Typography>
             </Grid>
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Tweets Returned for You
+              Most Searched Word
             </Typography>
             </Grid>
             </Grid>
