@@ -320,7 +320,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Most Searched Word
+              Most Searched Topic
             </Typography>
             </Grid>
             </Grid>
