@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Search from './search/search';
 import History from './history/history';
 
-const Home = (props) => {
+const Home = () => {
   useEffect(() => { }, []);
 
   const useStyles = makeStyles((theme) => ({

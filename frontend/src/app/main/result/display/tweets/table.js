@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
 
-    const handlePopup = (row) => {
+    const handlePopup = (e, row) => {
+      e.preventDefault();
       if(popupState === "init"){
         setPopupState(true);
       }
@@ -57,12 +58,13 @@ const useStyles = makeStyles((theme) => ({
                 hover
                 key={key}
                 component={Link}
+                onClick={(e) => {e.preventDefault()}}
                 style={{ textDecoration: 'none' }}
               >
                 <TableCell className={classes.cell} component="th" scope="row">{row.text}</TableCell>
                 <TableCell className={classes.cell} component="th" scope="row">{row.created_at}</TableCell>
                 <TableCell className={classes.cell} component="th" scope="row">
-                <Button onClick={() => handlePopup(row)} className={classes.button} variant="outlined" color="primary" size="small">
+                <Button onClick={(e) => handlePopup(e, row)} className={classes.button} variant="outlined" color="primary" size="small">
                   See More
                 </Button>
                   </TableCell>

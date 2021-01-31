@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import TweetsTable from './table';
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import UserContext from 'shared_resources/context/user_context';
 
-const TweetsFilters = ({ setTimeRange, type, setType }) => {
-
-    let location = useLocation();
-    const [tweets, setTweets] = useState();
-
+const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDate, endDate, setEndDate}) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,81 +35,34 @@ const TweetsFilters = ({ setTimeRange, type, setType }) => {
 
   const classes = useStyles();
 
-  const [selected, setSelected] = React.useState('last_week');
+  const { user, setUser } = useContext(UserContext);
 
-  function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
-  const handleClick = (new_value) => {
-
-    setSelected(new_value);
-
-    if(new_value === 'last_week'){ 
-
-    var days = 7; 
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-    var day = last.getDate();
-    var month = last.getMonth() + 1;
-    var year = last.getFullYear();
-    setTimeRange(year + '-' + month + '-' + day);
-        
-     }
-    else if (new_value === 'last_month'){ 
-        var days = 30; 
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-    var day = last.getDate();
-    var month = last.getMonth() + 1;
-    var year = last.getFullYear();
-    setTimeRange(year + '-' + month + '-' + day);
-     }
-    else if (new_value === 'three_months'){ 
-        var days = 90; 
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-    var day = last.getDate();
-    var month = last.getMonth() + 1;
-    var year = last.getFullYear();
-    setTimeRange(year + '-' + month + '-' + day);
-     }
-    else if (new_value === 'six_months'){ 
-        var days = 180; 
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-    var day = last.getDate();
-    var month = last.getMonth() + 1;
-    var year = last.getFullYear();
-    setTimeRange(year + '-' + month + '-' + day);
-     }
-    else if (new_value === 'one_year'){ 
-        var days = 365; 
-    var date = new Date();
-    var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-    var day = last.getDate();
-    var month = last.getMonth() + 1;
-    var year = last.getFullYear();
-    setTimeRange(year + '-' + month + '-' + day);
-     }
-    else;
-
+  function handleStartDate(e){
+    setStartDate(e.target.value);
   }
 
-  const handleType = (new_value) => {
+  function handleEndDate(e){
+    setEndDate(e.target.value);
+  }
 
-    setType(new_value);
-
+  function handleUpdate(){
+    axios({
+      method: 'post',
+      url: `/api/search_by_date/${location.search}/?u=${user.username}`,
+      headers: {}, 
+      data: 
+        JSON.stringify({'startDate': startDate, 'endDate': endDate})
+      ,
+      withCredentials: true
+    })
+  .then((res) => {
+      setTweets(res.data.response);
+      setWords(res.data.words);
+      setLoading(false);
+  })
+  .catch((err) => {
+      console.log(err);
+  })
   }
 
   return (
@@ -126,7 +76,7 @@ const TweetsFilters = ({ setTimeRange, type, setType }) => {
         spacing={3}
         className={classes.header}
       >
-          {/* 
+          {
           <Grid item xs={12} className={classes.header}>
 <Grid
         container
@@ -137,54 +87,39 @@ const TweetsFilters = ({ setTimeRange, type, setType }) => {
         spacing={3}
       >
           <Grid item>
-<Button size="small" className={selected === 'last_week' ? classes.selected : classes.button} onClick={() => {handleClick('last_week')}} variant="outlined" color="primary">
-        Last week
-      </Button>
+          <TextField
+        id="date"
+        label="Start Date"
+        size="small"
+        type="date"
+        onChange={(e) => {handleStartDate(e)}}
+        className={classes.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
       </Grid>
       <Grid item>
-<Button size="small" className={selected === 'last_month' ? classes.selected : classes.button} onClick={() => {handleClick('last_month')}} variant="outlined" color="primary">
-        Last month
-      </Button>
+      <TextField
+        id="date"
+        label="End Date"
+        type="date"
+        size="small"
+        onChange={(e) => {handleEndDate(e)}}
+        className={classes.textField}
+        InputLabelProps={{
+          shrink: true,
+        }}
+      />
       </Grid>
       <Grid item>
-<Button size="small" className={selected === 'three_months' ? classes.selected : classes.button} onClick={() => {handleClick('three_months')}} variant="outlined" color="primary">
-        3 months
-      </Button>
-      </Grid>
-      <Grid item>
-<Button size="small" className={selected === 'six_months' ? classes.selected : classes.button} onClick={() => {handleClick('six_months')}} variant="outlined" color="primary">
-        6 months
-      </Button>
-      </Grid>
-      <Grid item>
-<Button size="small" className={selected === 'one_year' ? classes.selected : classes.button} onClick={() => {handleClick('one_year')}} variant="outlined" color="primary">
-        1 year
+<Button size="small" disabled={!(startDate !== undefined && endDate !== undefined)} className={classes.button} variant="outlined" color="primary" onClick={() => {handleUpdate()}}>
+        Update
       </Button>
       </Grid>
           </Grid>
           </Grid>
-          */}
-          <Grid item xs={12} className={classes.header}>
-          <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap" }}
-        spacing={3}
-      >
-          <Grid item>
-          <Button size="small" className={type === 'recent' ? classes.selected : classes.button} onClick={() => {handleType('recent')}} variant="outlined" color="primary">
-          Recent
-      </Button>
-          </Grid>
-          <Grid item>
-          <Button size="small" className={type === 'popular' ? classes.selected : classes.button} onClick={() => {handleType('popular')}} variant="outlined" color="primary">
-        Popular
-      </Button>
-          </Grid>
-      </Grid>
-          </Grid>
+          }
           </Grid>
     </div>
   );
