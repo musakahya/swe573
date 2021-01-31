@@ -38,7 +38,7 @@ const Sentiments = ({ tweets, setTweets, setWords, setLoading, startDate, endDat
         boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
         backgroundColor: '#FFFFFF',
         marginRight: theme.spacing(2),
-        paddingLeft: theme.spacing(4)
+        paddingLeft: theme.spacing(0)
     },
     filters: {
       width: '%100',
