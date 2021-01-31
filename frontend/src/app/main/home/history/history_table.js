@@ -50,6 +50,10 @@ const HistoryTable = (props) => {
     setSelected(search_term);
   }
 
+  function getUniqueListBy(arr, key) {
+    return [...new Map(arr.map(item => [item[key], item])).values()]
+  }
+
   const classes = useStyles();
   return (
     <div>
@@ -70,7 +74,7 @@ const HistoryTable = (props) => {
           </TableHead>
           <TableBody>
             {props && props.rows && props.rows.length > 0 ? 
-            (props.rows.map((row, index) => (
+            (getUniqueListBy(props.rows, 'search_term').sort((b,a) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)).map((row, index) => (
               <TableRow
                 hover
                 key={row.id}

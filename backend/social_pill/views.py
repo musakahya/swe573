@@ -209,7 +209,7 @@ def history(request):
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
   elif request.method == 'GET':
     try:
-      history = History.objects.filter(email_address=request.user).order_by('-date')
+      history = History.objects.filter(email_address=request.user).order_by('date')
       serializer = HistorySerializer(history, many=True)
       return Response(serializer.data)
     except ObjectDoesNotExist as e:
