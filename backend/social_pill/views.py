@@ -99,16 +99,18 @@ def search(request):
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def searchTweetsByDate(request):
-  
-  dbTweets = queryDatabaseByDate(request.GET.get('q', None).split('/?u=')[0], '2021-01-29')
 
-  print(dbTweets)
+  startDate = json.loads(request.body)["startDate"]
+
+  endDate = json.loads(request.body)["endDate"]
+  
+  dbTweets = queryDatabaseByDate(request.GET.get('q', None).split('/?u=')[0], startDate, endDate)
 
   data = []
 
   ## Add tweets coming from the database into data dictionary
   for tweet in dbTweets:
-    data.append(json.loads(tweet))
+    data.append(json.loads(tweet[0]))
 
   ## Get text attribute from the Tweet object
   rawTweets = getTextFromTweet(data)
@@ -124,6 +126,7 @@ def searchTweetsByDate(request):
   globalData = data
 
   return JsonResponse({'response':data[:2500], 'words': words})
+  
 
 
 @csrf_exempt

@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('token-auth/', obtain_jwt_token),
     path('api/search/', search, name="search"),
-    path('api/search_by_date/', searchTweetsByDate, name="searchTweetsByDate"),
+    path('api/search_by_date/', csrf_exempt(searchTweetsByDate), name="searchTweetsByDate"),
     path('api/history/', csrf_exempt(history), name="history"),
     path('api/tweet/', csrf_exempt(tweet), name="tweet"),
     path('api/sentiment/', sentiment, name="sentiment"),
