@@ -30,7 +30,7 @@ const HashtagsChart = ({ hashtags }) => {
   useEffect(() => {
       if(hashtags){
       let data = [];
-      for(let i = 0; i < hashtags.length && i < 10; i++){
+      for(let i = 0; i < hashtags.length && i < 5; i++){
         data.push({x: hashtags[i][0], y: hashtags[i][1]})
       }
       setChartData(data);
