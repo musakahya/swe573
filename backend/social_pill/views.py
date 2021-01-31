@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from textblob import TextBlob
 from rest_framework import permissions
+from django.db.models import Count
 
 ## Models and serializers
 from .models import History, Tweet
@@ -222,8 +223,12 @@ def tweet(request):
   if request.method == 'GET':
     try:
       tweets = Tweet.objects.filter(user=request.user).count()
-      return Response(tweets)
-    except Exception:
+      totalTweets = Tweet.objects.count()
+      mostTweet = Tweet.objects.annotate(num_search=Count('search_term')).order_by('-num_search')[:1]
+      response = [tweets, totalTweets, mostTweet[0].search_term]
+      return Response(response)
+    except Exception as e:
+        print(e)
         return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(['POST', 'GET'])
