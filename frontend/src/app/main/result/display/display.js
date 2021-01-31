@@ -33,6 +33,9 @@ const Display = ({ setLoading }) => {
   const [tweets, setTweets] = useState();
   const [words, setWords] = useState();
 
+  const [startDate, setStartDate] = React.useState();
+  const [endDate, setEndDate] = React.useState();
+
   useEffect(() => {
     axios.get(`/api/search/${location.search}/?u=${user.username}`, { withCredentials: true }
 )
@@ -51,22 +54,22 @@ const Display = ({ setLoading }) => {
     <Suspense fallback={<div>Loading...</div>}>         
               <Switch>
                 <Route path="/app/result/tweets">
-                    <Tweets tweets={tweets}/>
+                    <Tweets tweets={tweets} setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
                 <Route path="/app/result/hashtags">
-                    <Hashtags tweets={tweets}/>
+                    <Hashtags tweets={tweets} setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
                 <Route path="/app/result/people">
-                    <People tweets={tweets}/>
+                    <People tweets={tweets} setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
                 <Route path="/app/result/wordcloud">
-                    <WordCloud words={words} tweets={tweets}/>
+                    <WordCloud words={words} tweets={tweets} setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
                 <Route path="/app/result/sentiments">
-                    <Sentiments tweets={tweets}/>
+                    <Sentiments tweets={tweets} startDate={startDate} endDate={endDate} setTweets={setTweets} setWords={setWords} setLoading={setLoading} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
                 <Route path="/app/result/cooccurrence">
-                    <Cooccurrence tweets={tweets} words={words}/>
+                    <Cooccurrence tweets={tweets} words={words} startDate={startDate} endDate={endDate} setTweets={setTweets} setWords={setWords} setLoading={setLoading} setStartDate={setStartDate} setEndDate={setEndDate}/>
                 </Route>
               </Switch>
           </Suspense>

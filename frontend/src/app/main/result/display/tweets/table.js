@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
                 hover
                 key={key}
                 component={Link}
+                onClick={(e) => {e.preventDefault()}}
                 style={{ textDecoration: 'none' }}
               >
                 <TableCell className={classes.cell} component="th" scope="row">{row.text}</TableCell>

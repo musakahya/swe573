@@ -4,9 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import PeopleChart from './chart';
 import PeopleTable from './table';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import TodayIcon from '@material-ui/icons/Today';
+import NotesIcon from '@material-ui/icons/Notes';
+import TweetsFilters from '../tweets/filters';
 
-const People = ({ tweets }) => {
+const People = ({ tweets, setTweets, setWords, setLoading, startDate, endDate, setStartDate, setEndDate }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -99,9 +101,93 @@ const People = ({ tweets }) => {
             </Typography>
 </Grid>
 <Grid item  xs={12}>
-  <div className={classes.info}>
-  <div><strong>Most frequently</strong> mentioned people/organizations are displayed from <strong>{tweets ? tweets.length : 0} </strong>tweets.</div>
+<Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        className={classes.info}
+      >
+        <Grid item xs={6} >
+        <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <NotesIcon/>
+          </Grid>
+          <Grid item>
+  <b>Notes</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item style={{paddingLeft: 23}}>
+  <div >
+  <div >
+  {startDate !== undefined && endDate !== undefined ? 
+  <li><strong>Displaying: most popular mentions to the people and organizations from {tweets ? tweets.length : 0} tweets sent between {startDate} and {endDate}.</strong></li>
+  : 
+  <li><strong>Displaying: most popular mentions to the people and organizations from the most recent {tweets ? tweets.length : 0} tweets.</strong></li>
+  }
+  <li>Use the right-hand side panel to change the time interval.</li>
+  <li>Maximum number of tweets that can be included at a time for any selected time interval is 2500.</li>
   </div>
+  </div>
+  </Grid>
+  </Grid>
+  
+  </Grid>
+  <Grid item xs={6} style={{borderLeft: '1px solid grey'}}>
+  <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-end"
+        style={{paddingLeft: 30, paddingTop: 5}}
+      >
+<Grid item>
+<Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={2}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <TodayIcon/>
+          </Grid>
+          <Grid item>
+  <b>Change Time Interval</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item>
+  <TweetsFilters setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+  </Grid>
+  </Grid>
+</Grid>
+      </Grid>
+  </Grid>
+  </Grid>
 </Grid>
 <Grid item xs={12} >
 <Grid

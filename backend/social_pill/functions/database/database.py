@@ -36,8 +36,8 @@ def saveHistory(request):
             date=date.today(),
   )
 
-def queryDatabaseByDate(searchTerm, startDate):
+def queryDatabaseByDate(searchTerm, startDate, endDate):
   cursor = connection.cursor()
-  cursor.execute("SELECT tweet_json FROM social_pill_tweet WHERE tweet_date > %s LIMIT 2", [startDate])
+  cursor.execute("SELECT tweet_json FROM social_pill_tweet WHERE tweet_date > %s AND tweet_date < %s", [startDate, endDate])
   rows = cursor.fetchall()
   return rows

@@ -5,8 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import WordCloudChart from './chart';
 import { Link, useLocation } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TodayIcon from '@material-ui/icons/Today';
+import NotesIcon from '@material-ui/icons/Notes';
+import TweetsFilters from '../tweets/filters';
 
-const WordCloud = ({ tweets, words }) => {
+const WordCloud = ({ tweets, words, setTweets, setWords, setLoading, startDate, endDate, setStartDate, setEndDate }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,12 +96,94 @@ useEffect(() => {
             </Typography>
 </Grid>
 <Grid item  xs={12}>
-  <div className={classes.info}>
-  <div><strong>Most used </strong> words are displayed in a word cloud format based on the following criteria.</div><br/>
-  <li>Words that do not contribute to the meaning are eliminated.</li>
-  <li>{`The search term, ${location.search.split('?q=')[1]}, is not included.`}</li>
-  <li>{tweets.length} tweets are processed.</li>
+<Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        className={classes.info}
+      >
+        <Grid item xs={6} >
+        <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <NotesIcon/>
+          </Grid>
+          <Grid item>
+  <b>Notes</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item style={{paddingLeft: 23}}>
+  <div >
+  <div >
+  {startDate !== undefined && endDate !== undefined ? 
+  <li><strong>Displaying: a word cloud for most used 100 words from {tweets ? tweets.length : 0} tweets sent between {startDate} and {endDate}.</strong></li>
+  : 
+  <li><strong>Displaying: a word cloud for most used 100 words from the most recent {tweets ? tweets.length : 0} tweets.</strong></li>
+  }
+  <li>Words that do not contribute to the meaning are eliminated including the original search term.</li>
+  <li>Use the right-hand side panel to change the time interval.</li>
+  <li>Maximum number of tweets that can be included at a time for any selected time interval is 2500.</li>
   </div>
+  </div>
+  </Grid>
+  </Grid>
+  
+  </Grid>
+  <Grid item xs={6} style={{borderLeft: '1px solid grey'}}>
+  <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-end"
+        style={{paddingLeft: 30, paddingTop: 5}}
+      >
+<Grid item>
+<Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={2}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <TodayIcon/>
+          </Grid>
+          <Grid item>
+  <b>Change Time Interval</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item>
+  <TweetsFilters setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+  </Grid>
+  </Grid>
+</Grid>
+      </Grid>
+  </Grid>
+  </Grid>
 </Grid>
 <Grid item  className={classes.table}>
   

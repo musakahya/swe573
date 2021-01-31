@@ -3,9 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TweetsTable from './table';
+import TweetsFilters from './filters';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TodayIcon from '@material-ui/icons/Today';
+import NotesIcon from '@material-ui/icons/Notes';
 
-const Tweets = ({ tweets }) => {
+const Tweets = ({ tweets, setTweets, setWords, setLoading, startDate, endDate, setStartDate, setEndDate }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,10 +66,97 @@ const Tweets = ({ tweets }) => {
               Tweets
             </Typography>
 </Grid>
+<Grid item xs={12} style={{marginTop: 21, marginBottom: 21}}>
+
+</Grid>
 <Grid item  xs={12}>
-  <div className={classes.info}>
-  <div><strong>{tweets ? tweets.length : 0} </strong> tweets are displayed from newest to oldest. Maximum number of tweets that can be returned at a time is 2500 for the performance purposes.</div>
+<Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+        className={classes.info}
+      >
+        <Grid item xs={6} >
+        <Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <NotesIcon/>
+          </Grid>
+          <Grid item>
+  <b>Notes</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item style={{paddingLeft: 23}}>
+  <div >
+  <div >
+  {startDate !== undefined && endDate !== undefined ? 
+  <li><strong>Displaying: {tweets ? tweets.length : 0} tweets sent between {startDate} and {endDate}.</strong> The newest appear at the top. </li>
+  : 
+  <li><strong>Displaying: the most recent {tweets ? tweets.length : 0} tweets.</strong> The newest appear at the top. </li>
+  }
+  <li>Use the right-hand side panel to change the time interval.</li>
+  <li>Maximum number of tweets that can be viewed at a time for any selected time interval is 2500.</li>
   </div>
+  </div>
+  </Grid>
+  </Grid>
+  
+  </Grid>
+  <Grid item xs={6} style={{borderLeft: '1px solid grey'}}>
+  <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-end"
+        style={{paddingLeft: 30, paddingTop: 5}}
+      >
+<Grid item>
+<Grid
+        container
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        spacing={2}
+      >
+        <Grid item>
+        <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <TodayIcon/>
+          </Grid>
+          <Grid item>
+  <b>Change Time Interval</b>
+  </Grid>
+  </Grid>
+  </Grid>
+  <Grid item>
+  <TweetsFilters setTweets={setTweets} setWords={setWords} setLoading={setLoading} startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+  </Grid>
+  </Grid>
+</Grid>
+      </Grid>
+  </Grid>
+  </Grid>
 </Grid>
 <Grid item  className={classes.table}>
   
