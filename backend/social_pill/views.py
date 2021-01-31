@@ -63,7 +63,7 @@ def search(request):
       data.append(json.loads(tweet["tweet_json"]))
 
     ## Query Twitter API for the given search term
-    res = queryTwitter(request.GET.get('q', None).split('/?u=')[0], dbTweets[1])
+    res = queryTwitter(request.GET.get('q', None).split('/?u=')[0], dbTweets[1], 100)
 
     ## Add tweets coming from Twitter into the new_tweets dictionary
     newTweets = []
