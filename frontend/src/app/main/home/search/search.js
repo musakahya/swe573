@@ -242,7 +242,7 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Topics Searched
+              Topics Searched by You
             </Typography>
             </Grid>
             </Grid>
@@ -264,7 +264,51 @@ const Search = ({ historyData }) => {
             <Grid item>
             <Typography style={{ color: '#495057',
     fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Tweets Returned
+              Tweets Returned for You
+            </Typography>
+            </Grid>
+            </Grid>
+            </Grid>
+            <Grid item className={classes.dashboard_element}>
+            <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ flexWrap: "nowrap" }}
+          >
+            <Grid item>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
+              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+            </Typography>
+            </Grid>
+            <Grid item>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
+              Tweets Returned for You
+            </Typography>
+            </Grid>
+            </Grid>
+            </Grid>
+            <Grid item className={classes.dashboard_element}>
+            <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            style={{ flexWrap: "nowrap" }}
+          >
+            <Grid item>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
+              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+            </Typography>
+            </Grid>
+            <Grid item>
+            <Typography style={{ color: '#495057',
+    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
+              Tweets Returned for You
             </Typography>
             </Grid>
             </Grid>
