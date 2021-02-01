@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     padding: 0,
     margin: 0
-    
-    
+
+
   },
   cell: {
     fontSize: 14,
@@ -29,52 +29,52 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-  function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
-  
-    return (
-      <>
-        <TableRow
-                hover
-                component={Link}
-                style={{ textDecoration: 'none' }}
-              >
-                <TableCell className={classes.cell} component="th" scope="row">{props.tweet}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">{props.polarity}</TableCell>
-              </TableRow>
-      </>
-    );
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
+
+  return (
+    <>
+      <TableRow
+        hover
+        component={Link}
+        style={{ textDecoration: 'none' }}
+      >
+        <TableCell className={classes.cell} component="th" scope="row">{props.tweet}</TableCell>
+        <TableCell className={classes.cell} component="th" scope="row">{props.polarity}</TableCell>
+      </TableRow>
+    </>
+  );
+}
+
+export default function SentimentTable(props) {
+
+  let rows = [];
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  function compare(a, b) {
+    if (a.polarity < b.polarity) {
+      return 1;
+    }
+    if (a.polarity > b.polarity) {
+      return -1;
+    }
+    return 0;
   }
 
-  export default function SentimentTable(props) {
-
-    let rows = [];
-
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(20);
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-
-      function compare( a, b ) {
-        if ( a.polarity < b.polarity ){
-          return 1;
-        }
-        if ( a.polarity > b.polarity ){
-          return -1;
-        }
-        return 0;
-      }
-  
-    return (
+  return (
 
     <div style={{
       padding: 0,
@@ -92,8 +92,8 @@ const useStyles = makeStyles((theme) => ({
         >
           <TableHead>
             <TableRow>
-              <TableCell style={{fontSize: 14}}>Tweet</TableCell>
-              <TableCell style={{fontSize: 14}}>
+              <TableCell style={{ fontSize: 14 }}>Tweet</TableCell>
+              <TableCell style={{ fontSize: 14 }}>
                 Polarity
                 {' '}
               </TableCell>
@@ -101,9 +101,9 @@ const useStyles = makeStyles((theme) => ({
           </TableHead>
           <TableBody>
             {props.rows
-                  ? props.rows.sort(compare)
-                    .map((row) => <Row tweet={row.tweet} polarity={row.polarity}/>)
-                  : ''}
+              ? props.rows.sort(compare)
+                .map((row) => <Row tweet={row.tweet} polarity={row.polarity} />)
+              : ''}
           </TableBody>
         </Table>
       </TableContainer>

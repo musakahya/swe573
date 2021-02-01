@@ -20,13 +20,13 @@ import {
 const useStyles = makeStyles((theme) => ({
   table: {
     width: '100%',
-    
-    
-    
+
+
+
   },
   button: {
     textTransform: 'capitalize',
-},
+  },
   cell: {
     fontSize: 14,
   },
@@ -73,25 +73,25 @@ const HistoryTable = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props && props.rows && props.rows.length > 0 ? 
-            (getUniqueListBy(props.rows, 'search_term').sort((b,a) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)).map((row, index) => (
-              <TableRow
-                hover
-                key={row.id}
-                component={Link}
-                //to={`/app/history/${row.email_id}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <TableCell className={classes.cell} component="th" scope="row">{row.search_term}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">{row.date}</TableCell>
-                <TableCell className={classes.cell} align="left">
+            {props && props.rows && props.rows.length > 0 ?
+              (getUniqueListBy(props.rows, 'search_term').sort((b, a) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)).map((row, index) => (
+                <TableRow
+                  hover
+                  key={row.id}
+                  component={Link}
+                  //to={`/app/history/${row.email_id}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <TableCell className={classes.cell} component="th" scope="row">{row.search_term}</TableCell>
+                  <TableCell className={classes.cell} component="th" scope="row">{row.date}</TableCell>
+                  <TableCell className={classes.cell} align="left">
 
                     <Button size="small" className={classes.button} variant="outlined" color="primary" component={Link} onClick={() => handleRepeat(row.search_term)}>
-        Repeat
+                      Repeat
       </Button>
-                </TableCell>
-              </TableRow>
-            ))) : null}
+                  </TableCell>
+                </TableRow>
+              ))) : null}
           </TableBody>
         </Table>
       </TableContainer>

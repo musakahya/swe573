@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
     fontSize: '18px'
   },
   colorPrimary: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const History = ({ rows, setRows}) => {
+const History = ({ rows, setRows }) => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState('loading');
@@ -70,27 +70,28 @@ const History = ({ rows, setRows}) => {
   useEffect(() => {
 
     axios.get('/api/history/',
-    {
-    headers: {
-      Authorization: `JWT ${localStorage.getItem('token')}`
-    },
-    withCredentials: true}
-    )
-    .then((res) => {
-      rowdata = res.data;
-      if (rowdata.length > 0) {
-        setLoading('completed');
-        setRows(rowdata);
-      } else {
-        setLoading('empty');
-        setRows([]);
+      {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        },
+        withCredentials: true
       }
-    })
-    .catch((err) => {
-      console.log(err);
-      setRows([]);
-      setLoading('empty');
-    })
+    )
+      .then((res) => {
+        rowdata = res.data;
+        if (rowdata.length > 0) {
+          setLoading('completed');
+          setRows(rowdata);
+        } else {
+          setLoading('empty');
+          setRows([]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setRows([]);
+        setLoading('empty');
+      })
   }, []);
 
   return (
@@ -106,7 +107,7 @@ const History = ({ rows, setRows}) => {
           className={classes.card_header}
         />
 
-        
+
         <Divider />
         <CardContent className={classes.content}>
           {loading === 'completed' ? (
@@ -124,18 +125,18 @@ const History = ({ rows, setRows}) => {
               </Grid>
             </Grid>
           ) : (
-            <Grid
-              container
-              direction="column"
-              alignItems="center"
-              justify="center"
-              className={classes.table}
-            >
-              <Grid item>
-              <CircularProgress />
-              </Grid>
-            </Grid>
-          )}
+                <Grid
+                  container
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  className={classes.table}
+                >
+                  <Grid item>
+                    <CircularProgress />
+                  </Grid>
+                </Grid>
+              )}
         </CardContent>
       </Card>
     </div>

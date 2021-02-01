@@ -29,7 +29,7 @@ const themeTextField = createMuiTheme({
         borderRadius: 3,
         "& $notchedOutline": {
           borderColor: "rgba(0,40,100,.12)",
-          
+
           boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
           color: '#000000'
         },
@@ -46,8 +46,8 @@ const themeTextField = createMuiTheme({
 const Search = ({ historyData }) => {
   const useStyles = makeStyles((theme) => ({
     welcome: {
-      
-      
+
+
     },
     header: {
       paddingTop: theme.spacing(3),
@@ -55,14 +55,14 @@ const Search = ({ historyData }) => {
     },
     search: {
       position: "relative",
-      
-      
+
+
       width: "100%",
       height: "100%",
       [theme.breakpoints.up("sm")]: {
         width: "auto",
       },
-      
+
     },
     dashboard_element: {
       backgroundColor: '#FFFFFF',
@@ -97,12 +97,12 @@ const Search = ({ historyData }) => {
       search_term: e.target.value,
       date: new Date(),
     },
-    {withCredentials: true})
-    .then((res) => {
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      { withCredentials: true })
+      .then((res) => {
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   function handlePopup(e) {
@@ -112,30 +112,31 @@ const Search = ({ historyData }) => {
   useEffect(() => {
 
     axios.get('/api/tweet/',
-    {
-    headers: {
-      Authorization: `JWT ${localStorage.getItem('token')}`
-    },
-    withCredentials: true}
+      {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        },
+        withCredentials: true
+      }
     )
-    .then((res) => {
-      if(res.data[0] && res.data[0] > 0){
-        setTotalTweetCount(res.data[1]);
-        setTweetCount(res.data[0]);
-        setMostSearched(res.data[2]);
-      } 
-      else {
+      .then((res) => {
+        if (res.data[0] && res.data[0] > 0) {
+          setTotalTweetCount(res.data[1]);
+          setTweetCount(res.data[0]);
+          setMostSearched(res.data[2]);
+        }
+        else {
+          setTotalTweetCount(0);
+          setTweetCount(0);
+          setMostSearched("not found");
+        }
+      })
+      .catch((err) => {
         setTotalTweetCount(0);
         setTweetCount(0);
         setMostSearched("not found");
-      }
-    })
-    .catch((err) => {
-      setTotalTweetCount(0);
-        setTweetCount(0);
-        setMostSearched("not found");
-      console.log(err);
-    })
+        console.log(err);
+      })
   }, []);
 
   // Component logic ends
@@ -151,70 +152,72 @@ const Search = ({ historyData }) => {
       >
         <Grid item xs={12}>
 
-        <Grid item xs={12} className={classes.header}>
-        <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-        spacing={3}
-      >
-        <Grid item >
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
-              New Search
+          <Grid item xs={12} className={classes.header}>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+              spacing={3}
+            >
+              <Grid item >
+                <Typography style={{
+                  color: '#495057',
+                  fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+                }} variant="h6">
+                  New Search
             </Typography>
-            </Grid>
-            {input.length > 0 ?
-            <Grid item >
-            <Chip
-        label="hit enter to search"
-        color="primary"
-      />
-            </Grid>
-            : null
-            }
-            </Grid>
-        </Grid>
-        
-        <Grid item xs={12}>
-          <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="center"
-            style={{ flexWrap: "nowrap", width: window.innerWidth - 108 }}
-          >
-            <Grid item xs={12} style={{ backgroundColor: '#FFFFFF', marginRight: 18 }}>
-            <Autocomplete
-              open={popupOpen}
-              onClose={() => handlePopup("close")}
-              id="search-autocomplete"
-              options={options.sort(
-                (a, b) => -b.keyword.localeCompare(a.keyword)
-              )}
-              onChange={(e) => {
-                handleChange(e);
-              }}
-              freeSolo={true}
-              renderInput={(params) => (
-                <MuiThemeProvider theme={themeTextField}>
-                  <TextField
-                    {...params}
-                    label="e.g. Covid-19"
-                    variant="outlined"
-                    onChange={(e) => handlePopup(e)}
+              </Grid>
+              {input.length > 0 ?
+                <Grid item >
+                  <Chip
+                    label="hit enter to search"
+                    color="primary"
                   />
-                </MuiThemeProvider>
-              )}
-            />
+                </Grid>
+                : null
+              }
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="center"
+              style={{ flexWrap: "nowrap", width: window.innerWidth - 108 }}
+            >
+              <Grid item xs={12} style={{ backgroundColor: '#FFFFFF', marginRight: 18 }}>
+                <Autocomplete
+                  open={popupOpen}
+                  onClose={() => handlePopup("close")}
+                  id="search-autocomplete"
+                  options={options.sort(
+                    (a, b) => -b.keyword.localeCompare(a.keyword)
+                  )}
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                  freeSolo={true}
+                  renderInput={(params) => (
+                    <MuiThemeProvider theme={themeTextField}>
+                      <TextField
+                        {...params}
+                        label="e.g. Covid-19"
+                        variant="outlined"
+                        onChange={(e) => handlePopup(e)}
+                      />
+                    </MuiThemeProvider>
+                  )}
+                />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-        </Grid>
-        </Grid>
-        <Grid item xs={12}>
-      <Grid item xs={12} className={classes.header}>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid item xs={12} className={classes.header}>
           <Grid
             container
             direction="row"
@@ -222,14 +225,16 @@ const Search = ({ historyData }) => {
             alignItems="flex-start"
             style={{ flexWrap: "nowrap" }}
           >
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
+            <Typography style={{
+              color: '#495057',
+              fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+            }} variant="h6">
               Dashboard
             </Typography>
           </Grid>
         </Grid>
         <Grid item xs={12}>
-        <Grid
+          <Grid
             container
             direction="row"
             justify="flex-start"
@@ -238,98 +243,114 @@ const Search = ({ historyData }) => {
             style={{ flexWrap: "nowrap" }}
           >
             <Grid item className={classes.dashboard_element}>
-            <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            style={{ flexWrap: "nowrap" }}
-          >
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {historyData.length >= 0 && tweetCount >= 0 ? historyData.length : <CircularProgress />}
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ flexWrap: "nowrap" }}
+              >
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15
+                  }}>
+                    {historyData.length >= 0 && tweetCount >= 0 ? historyData.length : <CircularProgress />}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'
+                  }}>
+                    Searches You Made
             </Typography>
-            </Grid>
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Searches You Made
-            </Typography>
-            </Grid>
-            </Grid>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item className={classes.dashboard_element}>
-            <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            style={{ flexWrap: "nowrap" }}
-          >
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ flexWrap: "nowrap" }}
+              >
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15
+                  }}>
+                    {tweetCount >= 0 ? tweetCount : <CircularProgress />}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'
+                  }}>
+                    Tweets Returned for You
             </Typography>
-            </Grid>
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Tweets Returned for You
-            </Typography>
-            </Grid>
-            </Grid>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item className={classes.dashboard_element}>
-            <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            style={{ flexWrap: "nowrap" }}
-          >
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {totalTweetCount >= 0 ? totalTweetCount : <CircularProgress />}
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ flexWrap: "nowrap" }}
+              >
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15
+                  }}>
+                    {totalTweetCount >= 0 ? totalTweetCount : <CircularProgress />}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'
+                  }}>
+                    All Tweets We Have
             </Typography>
-            </Grid>
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              All Tweets We Have
-            </Typography>
-            </Grid>
-            </Grid>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item className={classes.dashboard_element}>
-            <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            style={{ flexWrap: "nowrap" }}
-          >
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15}}>
-              {mostSearched !== undefined ? mostSearched : <CircularProgress />}
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ flexWrap: "nowrap" }}
+              >
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontWeight: '600', fontSize: '2rem', marginTop: 15
+                  }}>
+                    {mostSearched !== undefined ? mostSearched : <CircularProgress />}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography style={{
+                    color: '#495057',
+                    fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'
+                  }}>
+                    Most Searched Topic
             </Typography>
-            </Grid>
-            <Grid item>
-            <Typography style={{ color: '#495057',
-    fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', fontSize: '.9375rem', fontWeight: '400'}}>
-              Most Searched Topic
-            </Typography>
-            </Grid>
-            </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-        </Grid>
+      </Grid>
 
-        {selected && selected !== "" ? <Redirect to={`/app/result/tweets/?q=${selected.toLowerCase().replace(' ', '_')}`} /> : null}
+      {selected && selected !== "" ? <Redirect to={`/app/result/tweets/?q=${selected.toLowerCase().replace(' ', '_')}`} /> : null}
     </div>
   );
 };
