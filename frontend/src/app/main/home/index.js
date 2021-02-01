@@ -27,9 +27,9 @@ const Home = () => {
   return (
     <div className={classes.paper}>
 
-      <Search historyData={rows}/>
+      <Search historyData={rows} />
 
-      <History rows={rows} setRows={setRows}/>
+      <History rows={rows} setRows={setRows} />
 
     </div>
   );

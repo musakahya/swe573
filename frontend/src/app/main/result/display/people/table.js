@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     padding: 0,
     margin: 0
-    
-    
+
+
   },
   cell: {
     fontSize: 14,
@@ -29,43 +29,43 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-  function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
-  
-    return (
-      <>
-        <TableRow
-                hover
-                key={props.id}
-                component={Link}
-                style={{ textDecoration: 'none' }}
-              >
-                <TableCell className={classes.cell} component="th" scope="row">{props.id}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">{props.value}</TableCell>
-              </TableRow>
-      </>
-    );
-  }
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
 
-  export default function PeopleTable(props) {
+  return (
+    <>
+      <TableRow
+        hover
+        key={props.id}
+        component={Link}
+        style={{ textDecoration: 'none' }}
+      >
+        <TableCell className={classes.cell} component="th" scope="row">{props.id}</TableCell>
+        <TableCell className={classes.cell} component="th" scope="row">{props.value}</TableCell>
+      </TableRow>
+    </>
+  );
+}
 
-    let rows = [];
+export default function PeopleTable(props) {
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(20);
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-  
-    return (
+  let rows = [];
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  return (
 
     <div style={{
       padding: 0,
@@ -82,8 +82,8 @@ const useStyles = makeStyles((theme) => ({
         >
           <TableHead>
             <TableRow>
-              <TableCell style={{fontSize: 14}}>Screen Name</TableCell>
-              <TableCell style={{fontSize: 14}}>
+              <TableCell style={{ fontSize: 14 }}>Screen Name</TableCell>
+              <TableCell style={{ fontSize: 14 }}>
                 Number of Mentions
                 {' '}
               </TableCell>
@@ -91,25 +91,25 @@ const useStyles = makeStyles((theme) => ({
           </TableHead>
           <TableBody>
             {props.rows
-                  ? props.rows
-                    .slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage,
-                    )
-                    .map((row) => <Row id={row[0]} value={row[1]} />)
-                  : ''}
+              ? props.rows
+                .slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage,
+                )
+                .map((row) => <Row id={row[0]} value={row[1]} />)
+              : ''}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
-            component="div"
-            count={Object.keys(props.rows) ? Object.keys(props.rows).length : 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+        rowsPerPageOptions={[20, 50, 100]}
+        component="div"
+        count={Object.keys(props.rows) ? Object.keys(props.rows).length : 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 };

@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import UserContext from 'shared_resources/context/user_context';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
-const Login = ({}) => {
+const Login = ({ }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,18 +37,18 @@ const Login = ({}) => {
     },
     button: {
       textTransform: 'capitalize',
-  },
-  button_right: {
-    color: '#000000',
-    textDecoration: 'none'
-},
-  fields: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#D2D2D2",
-            boxShadow: '0 5px 10px 0 rgba(0,0,0,.05)',
-            color: '#000000',
-            borderRadius: 10
-  }
+    },
+    button_right: {
+      color: '#000000',
+      textDecoration: 'none'
+    },
+    fields: {
+      backgroundColor: "#FFFFFF",
+      borderColor: "#D2D2D2",
+      boxShadow: '0 5px 10px 0 rgba(0,0,0,.05)',
+      color: '#000000',
+      borderRadius: 10
+    }
   }));
 
   const themeTextField = createMuiTheme({
@@ -58,7 +58,7 @@ const Login = ({}) => {
           borderRadius: 3,
           "& $notchedOutline": {
             borderColor: "rgba(0,40,100,.12)",
-            
+
             boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
             color: '#000000'
           },
@@ -80,7 +80,7 @@ const Login = ({}) => {
   const [loginFormData, setLoginFormData] = React.useState();
   const [isLoginValid, setLoginValid] = React.useState(false);
   const { user, setUser } = useContext(UserContext);
-  const [ isError, setError ] = React.useState(false);
+  const [isError, setError] = React.useState(false);
   let form;
 
   // login form
@@ -111,9 +111,9 @@ const Login = ({}) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({username: loginValues.username, password: loginValues.password})
+      body: JSON.stringify({ username: loginValues.username, password: loginValues.password })
     })
-    .then(res => res.json())
+      .then(res => res.json())
       .then(json => {
         localStorage.setItem('token', json.token);
         localStorage.setItem('user', json.user.username);
@@ -131,146 +131,152 @@ const Login = ({}) => {
       });
   };
 
-return (
-  <div className={classes.root}>
-    <CssBaseline />
-    <Topbar />
-    <div className={classes.toolbar} />
-    <div className={classes.content}>
-    <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-      >
-        <Grid item>
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <Topbar />
+      <div className={classes.toolbar} />
+      <div className={classes.content}>
         <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        <Grid item>
-    <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: 400 }}
-        spacing={2}
-        className={classes.fields}
-      >
-        <Grid item xs={12} style={{ backgroundColor: "#3F51B5", borderRadius: 10, width: "100%", borderColor: "#D2D2D2",
-            boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
-            color: '#000000'}}>
-        <Grid
-        container
-        direction="row"
-        justify="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <Grid item>
-        <VpnKeyIcon style={{color: "#FFFFFF", marginTop: 5}}/>
-        </Grid>
-        <Grid item>
-        
-        <Typography style={{ fontWeight: 600, color: '#ffffff',
-      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="h6">
-        
-              Sign In
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+            >
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  style={{ flexWrap: "nowrap", width: 400 }}
+                  spacing={2}
+                  className={classes.fields}
+                >
+                  <Grid item xs={12} style={{
+                    backgroundColor: "#3F51B5", borderRadius: 10, width: "100%", borderColor: "#D2D2D2",
+                    boxShadow: '0 1px 2px 0 rgba(0,0,0,.05)',
+                    color: '#000000'
+                  }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                      spacing={2}
+                    >
+                      <Grid item>
+                        <VpnKeyIcon style={{ color: "#FFFFFF", marginTop: 5 }} />
+                      </Grid>
+                      <Grid item>
+
+                        <Typography style={{
+                          fontWeight: 600, color: '#ffffff',
+                          fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+                        }} variant="h6">
+
+                          Sign In
             </Typography>
-            </Grid>
-            </Grid>
-        </Grid>
-        <Grid item></Grid>
-        {isError ? (
-        <Grid item>
-          <Typography style={{color: 'red',
-      fontFamily : 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif', }} variant="body2">
-        
-              Email address or password is invalid. Please try again.
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item></Grid>
+                  {isError ? (
+                    <Grid item>
+                      <Typography style={{
+                        color: 'red',
+                        fontFamily: 'Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif',
+                      }} variant="body2">
+
+                        Email address or password is invalid. Please try again.
             </Typography>
-        </Grid>
-        ) : null}
-        <Grid item></Grid>
-        <Grid item xs={12}>
-        <MuiThemeProvider theme={themeTextField}>
-          <div style={{backgroundColor: '#FFFFFF', width: 380}}>
-        <TextField
-            id="username"
-            variant="outlined"
-            helperText={""}
-            label="Email Address"
-            value={loginValues.username}
-            onChange={(e, id) => handleLoginChange(e, 'username')}
-            fullWidth
-           
-          />
-          </div>
-          </MuiThemeProvider>
-        </Grid>
-        
+                    </Grid>
+                  ) : null}
+                  <Grid item></Grid>
+                  <Grid item xs={12}>
+                    <MuiThemeProvider theme={themeTextField}>
+                      <div style={{ backgroundColor: '#FFFFFF', width: 380 }}>
+                        <TextField
+                          id="username"
+                          variant="outlined"
+                          helperText={""}
+                          label="Email Address"
+                          value={loginValues.username}
+                          onChange={(e, id) => handleLoginChange(e, 'username')}
+                          fullWidth
 
-        <Grid item></Grid>
+                        />
+                      </div>
+                    </MuiThemeProvider>
+                  </Grid>
 
-        <Grid item xs={12}>
-        <MuiThemeProvider theme={themeTextField}>
-        <div style={{backgroundColor: '#FFFFFF', width: 380}}>
-        <TextField
-            id="password"
-            variant="outlined"
-            type="password"
-            label="Password"
-            helperText={""}
-            value={loginValues.password}
-            onChange={(e, id) => handleLoginChange(e, 'password')}
-            fullWidth
 
-          />
-          </div>
-          </MuiThemeProvider>
-        </Grid>
-        <Grid item></Grid>
-        <Grid item xs={12}>
-        <Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="space-between"
-        style={{ flexWrap: "nowrap", width: '%100' }}
-        spacing={3}
-      >
-        <Grid item xs={12} style={{width: "100%"}}>
-        <Button fullWidth={true} disabled={!isLoginValid} onClick={handle_login} className={classes.button} variant="outlined" color="primary">
-        Sign In
+                  <Grid item></Grid>
+
+                  <Grid item xs={12}>
+                    <MuiThemeProvider theme={themeTextField}>
+                      <div style={{ backgroundColor: '#FFFFFF', width: 380 }}>
+                        <TextField
+                          id="password"
+                          variant="outlined"
+                          type="password"
+                          label="Password"
+                          helperText={""}
+                          value={loginValues.password}
+                          onChange={(e, id) => handleLoginChange(e, 'password')}
+                          fullWidth
+
+                        />
+                      </div>
+                    </MuiThemeProvider>
+                  </Grid>
+                  <Grid item></Grid>
+                  <Grid item xs={12}>
+                    <Grid
+                      container
+                      direction="row"
+                      justify="flex-start"
+                      alignItems="space-between"
+                      style={{ flexWrap: "nowrap", width: '%100' }}
+                      spacing={3}
+                    >
+                      <Grid item xs={12} style={{ width: "100%" }}>
+                        <Button fullWidth={true} disabled={!isLoginValid} onClick={handle_login} className={classes.button} variant="outlined" color="primary">
+                          Sign In
       </Button>
-        </Grid>
-        <Grid item>
-        
-        </Grid>
-        
-      </Grid>
-      
-        </Grid>
-        
-        </Grid>
-        <Grid item style={{ marginTop: 50, marginLeft: 60}}>
-        <Typography variant="subtitle2" className={classes.button_right} component={Link} to={"/app/signup"}>
-        Don't have an account? Sign up from here
+                      </Grid>
+                      <Grid item>
+
+                      </Grid>
+
+                    </Grid>
+
+                  </Grid>
+
+                </Grid>
+                <Grid item style={{ marginTop: 50, marginLeft: 60 }}>
+                  <Typography variant="subtitle2" className={classes.button_right} component={Link} to={"/app/signup"}>
+                    Don't have an account? Sign up from here
       </Typography>
-      </Grid>
+                </Grid>
+              </Grid>
+
+            </Grid>
+
+          </Grid>
+
         </Grid>
-        
-        </Grid>
-        
-        </Grid>
-        
-        </Grid>
-        
+
       </div>
-      </div>
-);
+    </div>
+  );
 };
 
 export default Login;

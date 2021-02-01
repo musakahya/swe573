@@ -4,13 +4,13 @@ import Grid from "@material-ui/core/Grid";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 export default class ErrorBoundary extends Component {
-  
+
   state = {
     error: "",
     errorInfo: "",
     hasError: false,
   };
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component {
                     window.location.reload();
                   }}
                 >
-                   reload this page.&nbsp; 
+                  reload this page.&nbsp;
                 </span>
               </p>
             </div>

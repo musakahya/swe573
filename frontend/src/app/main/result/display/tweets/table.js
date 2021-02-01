@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     padding: 0,
     margin: 0
-    
-    
+
+
   },
   button: {
     textTransform: 'capitalize',
-    backgroundColor: '#FFFFFF',    
-},
+    backgroundColor: '#FFFFFF',
+  },
   cell: {
     fontSize: 14,
   },
@@ -35,67 +35,67 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-  function Row({ setPopupState, popupState, setCurrentRow, key, row }) {
+function Row({ setPopupState, popupState, setCurrentRow, key, row }) {
 
-    const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
 
-    const handlePopup = (e, row) => {
-      e.preventDefault();
-      if(popupState === "init"){
-        setPopupState(true);
-      }
-      else if (popupState === true) setPopupState(false);
-      else if (popupState === false) setPopupState(true);
-      else;
-      setCurrentRow(row);
-      
+  const handlePopup = (e, row) => {
+    e.preventDefault();
+    if (popupState === "init") {
+      setPopupState(true);
     }
-  
-    return (
-      <>
-        <TableRow
-                hover
-                key={key}
-                component={Link}
-                onClick={(e) => {e.preventDefault()}}
-                style={{ textDecoration: 'none' }}
-              >
-                <TableCell className={classes.cell} component="th" scope="row">{row.text}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">{row.created_at}</TableCell>
-                <TableCell className={classes.cell} component="th" scope="row">
-                <Button onClick={(e) => handlePopup(e, row)} className={classes.button} variant="outlined" color="primary" size="small">
-                  See More
-                </Button>
-                  </TableCell>
-              </TableRow>
-      </>
-    );
+    else if (popupState === true) setPopupState(false);
+    else if (popupState === false) setPopupState(true);
+    else;
+    setCurrentRow(row);
+
   }
 
-  export default function TweetsTable(props) {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(20);
+  return (
+    <>
+      <TableRow
+        hover
+        key={key}
+        component={Link}
+        onClick={(e) => { e.preventDefault() }}
+        style={{ textDecoration: 'none' }}
+      >
+        <TableCell className={classes.cell} component="th" scope="row">{row.text}</TableCell>
+        <TableCell className={classes.cell} component="th" scope="row">{row.created_at}</TableCell>
+        <TableCell className={classes.cell} component="th" scope="row">
+          <Button onClick={(e) => handlePopup(e, row)} className={classes.button} variant="outlined" color="primary" size="small">
+            See More
+                </Button>
+        </TableCell>
+      </TableRow>
+    </>
+  );
+}
 
-    const [openPopup, setPopup] = React.useState(false);
-    const [currentRow, setCurrentRow] = React.useState("");
-    const [popupState, setPopupState] = React.useState("init")
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
+export default function TweetsTable(props) {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
-    useEffect(() => {
-      if(popupState === "init");
-      else setPopup(true);
-    }, [popupState])
-  
-    return (
+  const [openPopup, setPopup] = React.useState(false);
+  const [currentRow, setCurrentRow] = React.useState("");
+  const [popupState, setPopupState] = React.useState("init")
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  useEffect(() => {
+    if (popupState === "init");
+    else setPopup(true);
+  }, [popupState])
+
+  return (
 
     <div style={{
       padding: 0,
@@ -117,37 +117,37 @@ const useStyles = makeStyles((theme) => ({
         >
           <TableHead>
             <TableRow>
-              <TableCell style={{fontSize: 14}}>Tweet</TableCell>
-              <TableCell style={{fontSize: 14}}>
+              <TableCell style={{ fontSize: 14 }}>Tweet</TableCell>
+              <TableCell style={{ fontSize: 14 }}>
                 Date
                 {' '}
               </TableCell>
-              <TableCell style={{fontSize: 14}}>
-                
+              <TableCell style={{ fontSize: 14 }}>
+
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {props.rows
-                  ? props.rows
-                    .slice(
-                      page * rowsPerPage,
-                      page * rowsPerPage + rowsPerPage,
-                    )
-                    .map((row) => <Row popupState={popupState} setPopupState={setPopupState} setCurrentRow={setCurrentRow} key={row.id} row={row} />)
-                  : ''}
+              ? props.rows
+                .slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage,
+                )
+                .map((row) => <Row popupState={popupState} setPopupState={setPopupState} setCurrentRow={setCurrentRow} key={row.id} row={row} />)
+              : ''}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-            rowsPerPageOptions={[20, 50, 100]}
-            component="div"
-            count={props.rows ? props.rows.length : 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+        rowsPerPageOptions={[20, 50, 100]}
+        component="div"
+        count={props.rows ? props.rows.length : 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 };
