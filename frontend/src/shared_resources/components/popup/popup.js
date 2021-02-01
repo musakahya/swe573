@@ -25,79 +25,79 @@ export default function Popup({ open, row, setOpen }) {
         <DialogTitle id="alert-dialog-title">Tweet Details</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: '%100' }}
-        spacing={3}
-      >
-          <Grid item>
-          <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: '%100' }}
-        spacing={1}
-      >
-          <Grid item xs={3}> 
-              <Typography variant="body2" style={{ fontWeight: 600 }}>
-                  Tweet
+            <Grid
+              container
+              direction="column"
+              justify="flex-start"
+              alignItems="flex-start"
+              style={{ flexWrap: "nowrap", width: '%100' }}
+              spacing={3}
+            >
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  style={{ flexWrap: "nowrap", width: '%100' }}
+                  spacing={1}
+                >
+                  <Grid item xs={3}>
+                    <Typography variant="body2" style={{ fontWeight: 600 }}>
+                      Tweet
               </Typography>
-          </Grid>
-          <Grid item>
-            {row.text}
-          </Grid>
-      </Grid>
-      </Grid>
+                  </Grid>
+                  <Grid item>
+                    {row.text}
+                  </Grid>
+                </Grid>
+              </Grid>
 
-      <Grid item>
-          <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: '%100' }}
-        spacing={1}
-      >
-          <Grid item xs={3}>
-              <Typography variant="body2" style={{ fontWeight: 600 }}>
-                  Retweets
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  style={{ flexWrap: "nowrap", width: '%100' }}
+                  spacing={1}
+                >
+                  <Grid item xs={3}>
+                    <Typography variant="body2" style={{ fontWeight: 600 }}>
+                      Retweets
               </Typography>
-          </Grid>
-          <Grid item xs={9}>
-          <Typography variant="body2">
-            {row.retweet_count}
-            </Typography>
-          </Grid>
-      </Grid>
-      </Grid>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2">
+                      {row.retweet_count}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
 
-      <Grid item>
-          <Grid
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap", width: '%100' }}
-        spacing={1}
-      >
-          <Grid item xs={3}>
-              <Typography variant="body2" style={{ fontWeight: 600 }}>
-                  Favorites
+              <Grid item>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  style={{ flexWrap: "nowrap", width: '%100' }}
+                  spacing={1}
+                >
+                  <Grid item xs={3}>
+                    <Typography variant="body2" style={{ fontWeight: 600 }}>
+                      Favorites
               </Typography>
-          </Grid>
-          <Grid item xs={9}>
-          <Typography variant="body2" >
-            {row.favorite_count}
-            </Typography>
-          </Grid>
-      </Grid>
-      </Grid>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="body2" >
+                      {row.favorite_count}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
 
-      </Grid>
+            </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

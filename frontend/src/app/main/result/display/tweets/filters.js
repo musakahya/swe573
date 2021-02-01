@@ -8,15 +8,15 @@ import { Link, useLocation } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import UserContext from 'shared_resources/context/user_context';
 
-const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDate, endDate, setEndDate}) => {
+const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDate, endDate, setEndDate }) => {
 
   const useStyles = makeStyles((theme) => ({
     root: {
-        
-      },
-      button: {
-        textTransform: 'capitalize',
-        backgroundColor: '#FFFFFF', 
+
+    },
+    button: {
+      textTransform: 'capitalize',
+      backgroundColor: '#FFFFFF',
     },
     selected: {
       textTransform: 'capitalize',
@@ -24,11 +24,11 @@ const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDat
       color: '#FFFFFF',
       "&:hover ": {
         backgroundColor: '#142587',
-      color: '#FFFFFF',
+        color: '#FFFFFF',
       },
       header: {
         paddingTop: theme.spacing(3),
-        
+
       },
     }
   }));
@@ -37,37 +37,37 @@ const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDat
 
   const { user, setUser } = useContext(UserContext);
 
-  function handleStartDate(e){
+  function handleStartDate(e) {
     setStartDate(e.target.value);
   }
 
-  function handleEndDate(e){
+  function handleEndDate(e) {
     setEndDate(e.target.value);
   }
 
-  function handleUpdate(){
+  function handleUpdate() {
     axios({
       method: 'post',
       url: `/api/search_by_date/${location.search}/?u=${user.username}`,
-      headers: {}, 
-      data: 
-        JSON.stringify({'startDate': startDate, 'endDate': endDate})
+      headers: {},
+      data:
+        JSON.stringify({ 'startDate': startDate, 'endDate': endDate })
       ,
       withCredentials: true
     })
-  .then((res) => {
-      setTweets(res.data.response);
-      setWords(res.data.words);
-      setLoading(false);
-  })
-  .catch((err) => {
-      console.log(err);
-  })
+      .then((res) => {
+        setTweets(res.data.response);
+        setWords(res.data.words);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return (
-    <div className={classes.root}>     
-    <Grid
+    <div className={classes.root}>
+      <Grid
         container
         direction="column"
         justify="center"
@@ -76,51 +76,51 @@ const TweetsFilters = ({ setTweets, setWords, setLoading, startDate, setStartDat
         spacing={3}
         className={classes.header}
       >
-          {
+        {
           <Grid item xs={12} className={classes.header}>
-<Grid
-        container
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ flexWrap: "nowrap" }}
-        spacing={3}
-      >
-          <Grid item>
-          <TextField
-        id="date"
-        label="Start Date"
-        size="small"
-        type="date"
-        onChange={(e) => {handleStartDate(e)}}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      </Grid>
-      <Grid item>
-      <TextField
-        id="date"
-        label="End Date"
-        type="date"
-        size="small"
-        onChange={(e) => {handleEndDate(e)}}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      </Grid>
-      <Grid item>
-<Button size="small" disabled={!(startDate !== undefined && endDate !== undefined)} className={classes.button} variant="outlined" color="primary" onClick={() => {handleUpdate()}}>
-        Update
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+              style={{ flexWrap: "nowrap" }}
+              spacing={3}
+            >
+              <Grid item>
+                <TextField
+                  id="date"
+                  label="Start Date"
+                  size="small"
+                  type="date"
+                  onChange={(e) => { handleStartDate(e) }}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="date"
+                  label="End Date"
+                  type="date"
+                  size="small"
+                  onChange={(e) => { handleEndDate(e) }}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Button size="small" disabled={!(startDate !== undefined && endDate !== undefined)} className={classes.button} variant="outlined" color="primary" onClick={() => { handleUpdate() }}>
+                  Update
       </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        }
       </Grid>
-          </Grid>
-          </Grid>
-          }
-          </Grid>
     </div>
   );
 };

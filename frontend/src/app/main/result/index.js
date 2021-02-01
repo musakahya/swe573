@@ -30,7 +30,7 @@ const Result = (props) => {
     <div className={classes.paper}>
 
       <Menu loading={loading} />
-      <Display setLoading={setLoading}/>
+      <Display setLoading={setLoading} />
 
     </div>
   );
