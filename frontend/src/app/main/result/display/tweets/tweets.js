@@ -107,7 +107,7 @@ const Tweets = ({ tweets, setTweets, setWords, setLoading, startDate, endDate, s
   {startDate !== undefined && endDate !== undefined ? 
   <li><strong>Displaying: {tweets ? tweets.length : 0} tweets sent between {startDate} and {endDate}.</strong> The newest appear at the top. </li>
   : 
-  <li><strong>Displaying: the most recent {tweets ? tweets.length : 0} tweets.</strong> The newest appear at the top. </li>
+  <li><strong>Displaying: the most recent {tweets ? tweets.length : 0} tweets.</strong> The newest appears at the top. </li>
   }
   <li>Use the right-hand side panel to change the time interval.</li>
   <li>Maximum number of tweets that can be viewed at a time for any selected time interval is 2500.</li>
