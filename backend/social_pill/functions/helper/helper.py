@@ -9,7 +9,7 @@ def getTextFromTweet(data):
 
 def findWords(cleanTweets):
   words = cleanTweets.split(" ")
-  words = [w for w in words if len(w) > 2]
+  words = [w for w in words if len(w) > 2 and w != 'amp']
   words = [w.lower() for w in words]
   words = [w for w in words if w not in STOPWORDS]
   return words
